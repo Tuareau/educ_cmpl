@@ -6,11 +6,13 @@
 #include <fstream>
 
 class LexicalAnalyzer;
-class SyntaxAnalyzer;
 
 class Token;
 class TokenTable;
+
 class IdentTable;
+
+class SyntaxAnalyzer;
 
 class CodeGenerator;
 

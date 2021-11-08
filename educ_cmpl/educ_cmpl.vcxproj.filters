@@ -14,6 +14,9 @@
     <ClInclude Include="header\compiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\token.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\compiler.cpp">
