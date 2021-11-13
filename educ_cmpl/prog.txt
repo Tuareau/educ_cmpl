@@ -1,0 +1,38 @@
+PROGRAMM;
+
+	integer x;
+	bool y;
+	string z;
+	x = 10;
+	z = "www";
+	WHILE 1
+		DO
+			x = x - 1; $ comment $
+			if x == 5 then
+				y = (length(z) > 5);
+				EXITWHILE;
+			else y = (length(z) < 5)
+			endif;
+	ENDWHILE;
+
+	write(y);
+
+	FUNC length(string s);
+		return strlen(s);
+	ENDF;
+
+	FUNC strlen(string s);
+		integer n;
+		string t;
+		t = "";
+		n = 0;
+		WHILE 1
+			DO
+				if t == s then EXITWHILE;
+				endif;
+				t = t + "w";
+				n = n + 1;
+		ENDWHILE;
+		return n;
+	ENDF;
+END.

@@ -17,9 +17,18 @@
     <ClInclude Include="header\token.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\lexical_analyzer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\compiler.cpp">
+    <ClCompile Include="header\lexical_analyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\token.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

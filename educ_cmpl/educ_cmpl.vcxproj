@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\pavma\source\repos\suai\compilers\educ_cmpl\educ_cmpl\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -142,10 +142,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="header\compiler.h" />
+    <ClInclude Include="header\lexical_analyzer.h" />
     <ClInclude Include="header\token.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\compiler.cpp" />
+    <ClCompile Include="header\lexical_analyzer.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\token.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
