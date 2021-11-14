@@ -6,19 +6,31 @@ educational compiler
 	G = { Vt, Vn, R, S }
 
 	Vt = {
-		PROGRAMM, END,
-		integer, bool, string,
-		WHILE, DO, EXITWHILE, ENDWHILE,
-		FUNC, ENDF, return, write,
-		if, then, endif,
-		true, false,
-		(, ), ;, ., ”, ”, _, \, /
-		,
-		[A..Z], [a..z], [0..9]
-		=, <, >, >=, <=, != ,==,
-		*, /, %, +, -,
-		/*, */
-		$
+		{
+			PROGRAMM, END,
+			integer, bool, string,
+			WHILE, DO, EXITWHILE, ENDWHILE,
+			FUNC, ENDF, return, write,
+			if, then, endif, else,
+			true, false,
+		}
+
+		{
+			(, ), ;, ., ”, ”,
+			,
+		}
+
+		{
+			[A..Z], [a..z], [0..9]
+		}
+
+		{
+			=, <, >, ==,
+			*, /, +, -,
+		}
+		
+			/*, */
+			$
 	}
 
 	Vn = {

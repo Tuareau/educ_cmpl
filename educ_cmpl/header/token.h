@@ -11,7 +11,7 @@
 class Token
 {
 public:
-	enum class Type { KEYWORD, DELIMITER, IDENT, CONSTANT, OPERATION_SIGN, NONE };
+	enum class Type { KEYWORD, DELIMITER, IDENT, CONSTANT, OPERATION_SIGN, NONE, };
 
 private:
 	Type _type;

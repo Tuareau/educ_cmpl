@@ -7,7 +7,7 @@ PROGRAMM;
 	z = "www";
 	WHILE 1
 		DO
-			x = x - 1; $ comment $
+			x = x - 1; /* comment */
 			if x == 5 then
 				y = (length(z) > 5);
 				EXITWHILE;
