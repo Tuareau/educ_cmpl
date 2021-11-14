@@ -11,12 +11,12 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 	size_t index = 0;
 	int symbol, err_symbol;
 	this->_state = State::START;
-	symbol = fin.get();
 
 	Token::Type token_type;
 	std::string token_value;
 
-	while (fin.good() && !fin.eof() && fin.peek() != EOF) {
+	symbol = fin.get();
+	while (fin.good() && !fin.eof() /*&& fin.peek() != EOF*/) {
 		switch (this->_state) {
 			case State::START:
 			{
@@ -24,18 +24,16 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 					symbol = fin.get();
 				}
 
-				if (std::isalpha(symbol)) {
+				if (std::isalpha(symbol) || symbol == '_') {
 					this->_state = State::IDENT;
 				}
 				else if (std::isdigit(symbol) || (symbol == '\"')) {
 					this->_state = State::CONSTANT;
 				}
-				else if ((symbol == '=') || (symbol == '<') || 
-					(symbol == '>') || (symbol == '-') || (symbol == '+')) 
-				{
+				else if (this->is_operation_sign(symbol)) {
 					this->_state = State::OPERATION_SIGN;
 				}
-				else if ((symbol == '$')) {
+				else if ((symbol == '/')) {
 					this->_state = State::COMMENT;
 				}
 				else {
@@ -46,17 +44,42 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 
 			case State::OPERATION_SIGN:
 			{
-				if ((symbol == '<') || (symbol == '>') || (symbol == '=') || 
-					(symbol == '-') || (symbol == '+'))
-				{
+				if (symbol == '=') { // assign or logical '=='
 					token_type = Token::Type::OPERATION_SIGN;
 					token_value = std::string((std::stringstream() << static_cast<char>(symbol)).str());
 
-					this->_token_table[index] = Token(token_type, token_value);
-					index++;
+					int next = fin.get();
+					if (next == '=') { // logical '=='
+						token_value += next;
+					}
 
-					symbol = fin.get();
+					this->_token_table[index++] = Token(token_type, token_value);
+
+					if (next == '=') {
+						symbol = fin.get();
+					}
+					else {
+						symbol = next;
+					}
 					this->_state = State::START;
+				}
+				else if (this->is_operation_sign(symbol)) {
+					if (symbol == '/') { // comment check
+						auto next = fin.get();
+						if (next == '*') {
+							this->_state = State::COMMENT;
+						}
+						fin.unget();
+					}
+					else {
+						token_type = Token::Type::OPERATION_SIGN;
+						token_value = std::string((std::stringstream() << static_cast<char>(symbol)).str());
+
+						this->_token_table[index++] = Token(token_type, token_value);
+
+						symbol = fin.get();
+						this->_state = State::START;
+					}
 				}
 				else {
 					err_symbol = symbol;
@@ -69,43 +92,41 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 			{
 				token_type = Token::Type::CONSTANT;
 				token_value = symbol;
-				if (std::isdigit(symbol)) {						
+				if (std::isdigit(symbol)) { // number	
 					symbol = fin.get();
 					while (std::isdigit(symbol)) {
 						token_value += symbol;
 						symbol = fin.get();						
 					}
 				}
-				else if (symbol == '\"') {
+				else if (symbol == '\"') { // literal
 					symbol = fin.get();
 					while (symbol != '\"') {
 						token_value += symbol;
 						symbol = fin.get();
 					}
 					token_value += symbol;
+					symbol = fin.get();
 				}
 
-				this->_token_table[index] = Token(token_type, token_value);
-				index++;
+				this->_token_table[index++] = Token(token_type, token_value);
 
-				symbol = fin.get();
 				this->_state = State::START;
 				break;
 			}
 
 			case State::DELIMITER:
 			{
-				if ((symbol == '(') || (symbol == ')') || (symbol == ';') || (symbol == ',')) {
+				if (this->is_delimiter(symbol)) {
 					token_type = Token::Type::DELIMITER;
 					token_value = std::string((std::stringstream() << static_cast<char>(symbol)).str());
 
-					this->_token_table[index] = Token(token_type, token_value);
-					index++;
+					this->_token_table[index++] = Token(token_type, token_value);
 
 					symbol = fin.get();
 					this->_state = State::START;
 				}
-				else {
+				else { // unknown symbol
 					err_symbol = symbol;
 					symbol = fin.get();
 					this->_state = State::ERROR;
@@ -124,20 +145,18 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 			{
 				token_value = symbol;
 				symbol = fin.get();
-				while (std::isalpha(symbol) || std::isdigit(symbol)) {
+				while (std::isalpha(symbol) || std::isdigit(symbol) || symbol == '_') {
 					token_value += symbol;
 					symbol = fin.get();
 				}
 
-				auto key_word_iter = std::find(this->_keywords.begin(), this->_keywords.end(), token_value);
-				if (key_word_iter != this->_keywords.end()) {
+				if (this->is_keyword(token_value)) {
 					token_type = Token::Type::KEYWORD;
 				}
 				else {
 					token_type = Token::Type::IDENT;
 				}
-				this->_token_table[index] = Token(token_type, token_value);
-				index++;
+				this->_token_table[index++] = Token(token_type, token_value);
 
 				this->_state = State::START;
 				break;
@@ -145,11 +164,23 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 
 			case State::COMMENT:
 			{
-				while (symbol != '$') {
-					symbol = fin.get();
+				if (symbol == '/') {
+					int next = fin.get();
+					if (next == '*') {
+						while (true) {
+							while ((next = fin.get()) != '*');
+							next = fin.get();
+							if (next == '/') {
+								break;
+							}
+						}
+						symbol = fin.get();
+					}
+					else {
+						fin.unget();
+					}
 				}
 
-				symbol = fin.get();
 				this->_state = State::START;
 				break;
 			}
@@ -171,5 +202,42 @@ void LexicalAnalyzer::print_token_table() const {
 		std::cout << indent << Token::type_to_str(token.second.type());
 		std::cout << indent << token.second.value();
 		std::cout << std::endl;
+	}
+}
+
+bool LexicalAnalyzer::is_operation_sign(const char c) const {
+	const auto begin = this->_operation_signs.begin();
+	const auto end = this->_operation_signs.end();
+	std::string symbol;
+	symbol += c;
+	if (std::find(begin, end, symbol) != end) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool LexicalAnalyzer::is_delimiter(const char c) const {
+	const auto begin = this->_delimiters.begin();
+	const auto end = this->_delimiters.end();
+	std::string symbol;
+	symbol += c;
+	if (std::find(begin, end, symbol) != end) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool LexicalAnalyzer::is_keyword(const std::string & str) const {
+	const auto begin = this->_keywords.begin();
+	const auto end = this->_keywords.end();
+	if (std::find(begin, end, str) != end) {
+		return true;
+	}
+	else {
+		return false;
 	}
 }
