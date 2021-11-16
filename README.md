@@ -1,6 +1,10 @@
 # educ_cmpl
 educational compiler
 
+## finite-state machine
+
+![finite-state machine](https://github.com/Tuareau/educ_cmpl/raw/develop/educ_cmpl/finite-state_machine.png)
+
 ## language grammar
 
 	G = { Vt, Vn, R, S }
