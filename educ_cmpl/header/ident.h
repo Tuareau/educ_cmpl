@@ -18,15 +18,16 @@ private:
 
 public:
 	Ident();
-	Ident(Type type, const std::string & value, const std::string & name);
+	Ident(Type type, const std::string & name, const std::string & value = std::string());
 
 	Ident & operator=(const Ident & other) = default;
 
 	Type type() const;
 	const std::string & value() const;
+	const std::string & name() const;
 
 	static std::string type_to_str(Type type);
-	static Ident::Type str_to_type(std::string str);
+	static Ident::Type str_to_type(const std::string & str);
 };
 
 #endif

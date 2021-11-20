@@ -3,7 +3,7 @@
 Ident::Ident()
 	: _name(""), _value(""), _type(Type::NONE) {}
 
-Ident::Ident(Type type, const std::string & value, const std::string & name)
+Ident::Ident(Type type, const std::string & name, const std::string & value)
 	: _name(name), _value(value), _type(type) {}
 
 Ident::Type Ident::type() const {
@@ -12,6 +12,10 @@ Ident::Type Ident::type() const {
 
 const std::string & Ident::value() const {
 	return this->_value;
+}
+
+const std::string & Ident::name() const {
+	return this->_name;
 }
 
 std::string Ident::type_to_str(Type type) {
@@ -38,16 +42,18 @@ std::string Ident::type_to_str(Type type) {
 	}
 	return str;
 }
-Ident::Type Ident::str_to_type(std::string str) {
-	if (str == "bool")
+Ident::Type Ident::str_to_type(const std::string & str) {
+	if (str == "bool") {
 		return Ident::Type::BOOL;
-	else 	if (str == "integer")
+	}
+	else if (str == "integer") {
 		return Ident::Type::INTEGER;
-	else 	if (str == "string")
+	}
+	else if (str == "string") {
 		return Ident::Type::STRING;
-	else 	if (str == "FUNC")
+	}
+	else if (str == "FUNC") {
 		return Ident::Type::FUNC;
-	else
-		return Ident::Type::NONE;
-
+	}
+	return Ident::Type::NONE;
 }

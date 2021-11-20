@@ -16,14 +16,12 @@
 #include "token.h"
 #include "ident.h"
 
-class Ident;
-
-
 class LexicalAnalyzer
 {
 private:
 	std::map<size_t, Token> _token_table;
 	std::map<std::string, Ident> _ident_table;
+
 	size_t _tokens_stream_pos;
 
 	std::vector<std::string> _keywords = {
@@ -52,6 +50,8 @@ private:
 	bool is_operation_sign(const char c) const;
 	bool is_delimiter(const char c) const;
 	bool is_keyword(const std::string & str) const;
+
+	bool is_decl_keyword(const std::string & str) const;
 
 public:
 	LexicalAnalyzer();
