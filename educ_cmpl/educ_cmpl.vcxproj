@@ -147,8 +147,8 @@
     <ClInclude Include="header\token.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="header\lexical_analyzer.cpp" />
     <ClCompile Include="source\ident.cpp" />
+    <ClCompile Include="source\lexical_analyzer.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\token.cpp" />
   </ItemGroup>
