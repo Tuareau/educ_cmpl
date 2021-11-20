@@ -23,6 +23,8 @@ class LexicalAnalyzer
 private:
 	std::map<size_t, Token> _token_table;
 
+	size_t _tokens_stream_pos;
+
 	std::vector<std::string> _keywords = {
 		"PROGRAMM", "END",
 		"integer", "bool", "string",
@@ -51,12 +53,19 @@ private:
 	bool is_keyword(const std::string & str) const;
 
 public:
-	LexicalAnalyzer() = default;
+	LexicalAnalyzer();
 
 	void construct_token_table(const std::string & filename);
 	//IdentTable * construct_ident_table(const std::string & filename);
 
 	void print_token_table() const;
+
+	Token get_next_token();
+	void reset_tokens_stream();
+	bool token_stream_ended() const;
+
+	size_t tokens_count() const;
+	Token get_token(size_t key) const;
 
 };
 

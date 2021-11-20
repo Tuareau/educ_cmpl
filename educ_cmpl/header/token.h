@@ -20,6 +20,7 @@ private:
 public:
 	Token();
 	explicit Token(Type type, std::string value = std::string());
+	Token(const Token & other) = default;
 
 	Token & operator=(const Token & other) = default;
 
@@ -27,6 +28,8 @@ public:
 	const std::string & value() const;
 
 	static std::string type_to_str(Type type);
+
+	bool valid() const;
 
 };
 

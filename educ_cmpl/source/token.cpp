@@ -38,3 +38,7 @@ std::string Token::type_to_str(Type type) {
 	}
 	return str;
 }
+
+bool Token::valid() const {
+	return this->_type != Type::NONE;
+}

@@ -1,5 +1,8 @@
 #include "lexical_analyzer.h"
 
+LexicalAnalyzer::LexicalAnalyzer()
+	: _tokens_stream_pos(0) {}
+
 void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 
 	std::fstream fin;
@@ -240,4 +243,34 @@ bool LexicalAnalyzer::is_keyword(const std::string & str) const {
 	else {
 		return false;
 	}
+}
+
+Token LexicalAnalyzer::get_next_token() {
+	this->_tokens_stream_pos += 1;
+	const auto pos = this->_tokens_stream_pos;
+	if (this->_token_table.contains(pos)) {
+		const auto & token = this->_token_table.at(pos);
+		return Token(token);
+	}
+	return Token();
+}
+
+void LexicalAnalyzer::reset_tokens_stream() {
+	this->_tokens_stream_pos = 0;
+}
+
+bool LexicalAnalyzer::token_stream_ended() const {
+	return this->_tokens_stream_pos >= this->_token_table.size();
+}
+
+size_t LexicalAnalyzer::tokens_count() const {
+	return this->_token_table.size();
+}
+
+Token LexicalAnalyzer::get_token(size_t key) const {
+	if (this->_token_table.contains(key)) {
+		const auto & token = this->_token_table.at(key);
+		return Token(token);
+	}
+	return Token();
 }
