@@ -26,7 +26,7 @@ public:
 	const std::string & value() const;
 
 	static std::string type_to_str(Type type);
-
+	static Ident::Type str_to_type(std::string str);
 };
 
 #endif

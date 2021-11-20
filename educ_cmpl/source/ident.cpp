@@ -38,3 +38,16 @@ std::string Ident::type_to_str(Type type) {
 	}
 	return str;
 }
+Ident::Type Ident::str_to_type(std::string str) {
+	if (str == "bool")
+		return Ident::Type::BOOL;
+	else 	if (str == "integer")
+		return Ident::Type::INTEGER;
+	else 	if (str == "string")
+		return Ident::Type::STRING;
+	else 	if (str == "FUNC")
+		return Ident::Type::FUNC;
+	else
+		return Ident::Type::NONE;
+
+}

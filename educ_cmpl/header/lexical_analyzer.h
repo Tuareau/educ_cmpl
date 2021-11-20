@@ -14,15 +14,16 @@
 #include <sstream>
 
 #include "token.h"
+#include "ident.h"
 
-//class Ident;
-//class IdentTable;
+class Ident;
+
 
 class LexicalAnalyzer
 {
 private:
 	std::map<size_t, Token> _token_table;
-
+	std::map<std::string, Ident> _ident_table;
 	size_t _tokens_stream_pos;
 
 	std::vector<std::string> _keywords = {
@@ -56,9 +57,10 @@ public:
 	LexicalAnalyzer();
 
 	void construct_token_table(const std::string & filename);
-	//IdentTable * construct_ident_table(const std::string & filename);
+	void construct_ident_table();
 
 	void print_token_table() const;
+	void print_ident_table() const;
 
 	Token get_next_token();
 	void reset_tokens_stream();

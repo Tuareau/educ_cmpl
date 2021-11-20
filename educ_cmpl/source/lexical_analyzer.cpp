@@ -1,5 +1,5 @@
 #include "lexical_analyzer.h"
-
+#include "ident.h"
 LexicalAnalyzer::LexicalAnalyzer()
 	: _tokens_stream_pos(0) {}
 
@@ -273,4 +273,35 @@ Token LexicalAnalyzer::get_token(size_t key) const {
 		return Token(token);
 	}
 	return Token();
+}
+void LexicalAnalyzer::construct_ident_table() {
+	std::map<size_t, Token>::iterator _token_it = _token_table.begin();
+	std::string _type_str = "";
+	std::string _empty_string = "";
+	for (;_token_it != _token_table.end();_token_it++) {
+		if (_token_it->second.value() == "bool" || _token_it->second.value() == "integer" || _token_it->second.value() == "string" || _token_it->second.value() == "FUNC") {
+			_type_str = _token_it->second.value();
+			_token_it++;
+			if (_ident_table.find(_token_it->second.value()) != _ident_table.end()) {
+				std::cout << "Идентификатор " << _token_it->second.value() << " уже занят! Повторное использование с типом: " << _type_str << std::endl;
+				//идентификатор уже занят
+				return;
+			}
+			if (is_keyword(_token_it->second.value())) {
+				std::cout << "Встречено ключевое слово " << _token_it->second.value() << " вместо идентификатора!" << std::endl;
+				return;
+			}
+			_ident_table[_token_it->second.value()] = Ident(Ident::str_to_type(_type_str),_empty_string, _token_it->second.value());
+		}
+	}
+}
+void LexicalAnalyzer::print_ident_table() const {
+	const auto indent = std::setw(20);
+	std::cout << "\n" << indent << "IDENT TABLE" << "\n\n";
+	std::cout << indent << "IDENT TYPE" << indent << "IDENT VALUE" << std::endl;
+	for (const auto& ident : this->_ident_table) {
+		std::cout << indent << Ident::type_to_str(ident.second.type());
+		std::cout << indent << ident.second.value();
+		std::cout << std::endl;
+	}
 }
