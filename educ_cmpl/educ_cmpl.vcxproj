@@ -146,6 +146,7 @@
     <ClInclude Include="header\compiler.h" />
     <ClInclude Include="header\constant.h" />
     <ClInclude Include="header\ident.h" />
+    <ClInclude Include="header\interpreter.h" />
     <ClInclude Include="header\lexical_analyzer.h" />
     <ClInclude Include="header\token.h" />
   </ItemGroup>

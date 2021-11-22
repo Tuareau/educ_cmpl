@@ -9,19 +9,16 @@
 class LexicalAnalyzer;
 
 class Token;
-class TokenTable;
-
 class Ident;
-class IdentTable;
+
+class Interpreter;
 
 class SyntaxAnalyzer;
-
-class CodeGenerator;
 
 class Compiler
 {
 private:
-	IdentTable * ident_table;
+	Interpreter * _interpreter;
 	LexicalAnalyzer * _lexical_analyzer;
 
 public:
