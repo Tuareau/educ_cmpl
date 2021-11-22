@@ -58,7 +58,7 @@ public:
 	void construct_token_table(const std::string & filename);
 	//IdentTable * construct_ident_table(const std::string & filename);
 
-	void print_token_table() const;
+	void print_token_table(std::ostream & os) const;
 
 	Token get_next_token();
 	void reset_tokens_stream();
