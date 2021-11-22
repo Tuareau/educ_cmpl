@@ -197,14 +197,14 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 	} 
 }
 
-void LexicalAnalyzer::print_token_table() const {
+void LexicalAnalyzer::print_token_table(std::ostream & os) const {
 	const auto indent = std::setw(20);
-	std::cout << "\n" << indent << "TOKEN TABLE" << "\n\n";
-	std::cout << indent << "TOKEN TYPE" << indent << "TOKEN VALUE" << std::endl;
+	os << "\n" << indent << "TOKEN TABLE" << "\n\n";
+	os << indent << "TOKEN TYPE" << indent << "TOKEN VALUE" << std::endl;
 	for (const auto & token : this->_token_table) {
-		std::cout << indent << Token::type_to_str(token.second.type());
-		std::cout << indent << token.second.value();
-		std::cout << std::endl;
+		os << indent << Token::type_to_str(token.second.type());
+		os << indent << token.second.value();
+		os << std::endl;
 	}
 }
 
@@ -302,13 +302,13 @@ bool LexicalAnalyzer::is_decl_keyword(const std::string & str) const {
 	}
 }
 
-void LexicalAnalyzer::print_ident_table() const {
+void LexicalAnalyzer::print_ident_table(std::ostream & os) const {
 	const auto indent = std::setw(20);
-	std::cout << "\n" << indent << "IDENT TABLE" << "\n\n";
-	std::cout << indent << "IDENT TYPE" << indent << "IDENT NAME" << std::endl;
+	os << "\n" << indent << "IDENT TABLE" << "\n\n";
+	os << indent << "IDENT TYPE" << indent << "IDENT NAME" << std::endl;
 	for (const auto & ident : this->_ident_table) {
-		std::cout << indent << Ident::type_to_str(ident.second.type());
-		std::cout << indent << ident.second.name();
-		std::cout << std::endl;
+		os << indent << Ident::type_to_str(ident.second.type());
+		os << indent << ident.second.name();
+		os << std::endl;
 	}
 }
