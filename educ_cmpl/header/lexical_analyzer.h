@@ -14,14 +14,13 @@
 #include <sstream>
 
 #include "token.h"
-
-//class Ident;
-//class IdentTable;
+#include "ident.h"
 
 class LexicalAnalyzer
 {
 private:
 	std::map<size_t, Token> _token_table;
+	std::map<std::string, Ident> _ident_table;
 
 	size_t _tokens_stream_pos;
 
@@ -52,20 +51,25 @@ private:
 	bool is_delimiter(const char c) const;
 	bool is_keyword(const std::string & str) const;
 
+	bool is_decl_keyword(const std::string & str) const;
+
 public:
 	LexicalAnalyzer();
 
 	void construct_token_table(const std::string & filename);
-	//IdentTable * construct_ident_table(const std::string & filename);
+	void construct_ident_table();
 
 	void print_token_table(std::ostream & os) const;
+	void print_ident_table(std::ostream & os) const;
 
-	Token get_next_token();
+	Token get_next_token();	
+	void unget_token();
 	void reset_tokens_stream();
 	bool token_stream_ended() const;
 
 	size_t tokens_count() const;
 	Token get_token(size_t key) const;
+
 
 };
 

@@ -14,6 +14,8 @@ int main(int argc, char * argv[]) {
 	LexicalAnalyzer la;
 	la.construct_token_table(filename);
 	la.print_token_table(std::cout);
+	la.construct_ident_table();
+	la.print_ident_table(std::cout);
 
 	return 0;
 }
