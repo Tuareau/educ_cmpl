@@ -329,6 +329,24 @@ void LexicalAnalyzer::print_ident_table(std::ostream & os) const {
 	}
 }
 
+bool LexicalAnalyzer::contains_ident(const std::string & name) const {
+	if (this->_ident_table.contains(name)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+Ident & LexicalAnalyzer::ident_ref(const std::string & name) {
+	if (this->_ident_table.contains(name)) {
+		return this->_ident_table.at(name);
+	}
+	else {
+		throw std::invalid_argument("LexicalAnalyzer::ident_ref(): invalid key, no element in map");
+	}
+}
+
 void LexicalAnalyzer::construct_constant_table() {
 	for (const auto & token_iter : this->_token_table) {
 		const auto & [pos, token] = token_iter;

@@ -13,6 +13,8 @@ public:
 		OPERATOR,
 		LABEL,
 		GOTO,
+		FUNC,
+		TEMP,
 	};
 
 private:
@@ -30,6 +32,31 @@ public:
 
 	RpnElement::Type type() const {
 		return this->_type;
+	}
+
+	static std::string type_as_str(Type type) {
+		std::string str;
+		switch (type) {
+		case Type::FUNC:
+			str = "FUNC";
+			break;
+		case Type::GOTO:
+			str = "GOTO";
+			break;
+		case Type::LABEL:
+			str = "LABEL";
+			break;
+		case Type::OPERAND:
+			str = "OPERAND";
+			break;
+		case Type::OPERATOR:
+			str = "OPERATOR";
+			break;
+		default:
+			throw std::invalid_argument("RpnElement::type_as_str(): element type mismatch");
+			break;
+		}
+		return str;
 	}
 };
 

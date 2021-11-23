@@ -18,6 +18,10 @@ const std::string & Ident::name() const {
 	return this->_name;
 }
 
+bool Ident::valid() const {
+	return this->_type != Type::NONE;
+}
+
 std::string Ident::type_to_str(Type type) {
 	std::string str;
 	switch (type) {
