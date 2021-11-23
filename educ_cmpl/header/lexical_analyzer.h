@@ -62,12 +62,14 @@ public:
 	void print_token_table(std::ostream & os) const;
 	void print_ident_table(std::ostream & os) const;
 
-	Token get_next_token();
+	Token get_next_token();	
+	void unget_token();
 	void reset_tokens_stream();
 	bool token_stream_ended() const;
 
 	size_t tokens_count() const;
 	Token get_token(size_t key) const;
+
 
 };
 

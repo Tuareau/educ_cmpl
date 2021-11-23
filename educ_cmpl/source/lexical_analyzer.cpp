@@ -255,6 +255,12 @@ Token LexicalAnalyzer::get_next_token() {
 	return Token();
 }
 
+void LexicalAnalyzer::unget_token() {
+	if (this->_tokens_stream_pos > 0) {
+		this->_tokens_stream_pos -= 1;
+	}
+}
+
 void LexicalAnalyzer::reset_tokens_stream() {
 	this->_tokens_stream_pos = 0;
 }
@@ -276,19 +282,28 @@ Token LexicalAnalyzer::get_token(size_t key) const {
 }
 
 void LexicalAnalyzer::construct_ident_table() {
-	for (const auto & token_iter : this->_token_table) {
-		const auto & [pos, token] = token_iter;
-		if (this->is_decl_keyword(token.value())) {
-			auto next_token = this->get_token(pos + 1);
+	std::string scope;
+	for (const auto & token_iter : this->_token_table) {	
+		const auto & [pos, token] = token_iter; // current token and its position
+		auto next_token = this->get_token(pos + 1);
+		if (token.value() == "ENDF") { // endf: reset scope
+			scope.clear();
+		}
+		if (this->is_decl_keyword(token.value())) { // bool, string, integer or func
 			if (next_token.valid()) {
-				if (this->_ident_table.contains(next_token.value())) {
-					std::cout << "\n\tREUSE ident: '" << next_token.value()
+				const auto ident_name = scope + next_token.value();
+				if (this->_ident_table.contains(ident_name)) { // declaration repeated
+					std::cout << "\n\tREUSE ident: '" << ident_name
 						<< "' type: " << token.value() << std::endl;
 				}
-				else {
-					this->_ident_table[next_token.value()] = Ident(Ident::str_to_type(token.value()), next_token.value());
+				else { // right declaration, new ident with scope
+					this->_ident_table[ident_name] = Ident(Ident::str_to_type(token.value()), ident_name);
 				}
-			}			
+			}
+		}
+		if (token.value() == "FUNC" && next_token.valid()) { // func: increase scope
+			const auto & func_name = next_token.value();
+			scope += func_name + "::";
 		}
 	}
 }
@@ -303,12 +318,13 @@ bool LexicalAnalyzer::is_decl_keyword(const std::string & str) const {
 }
 
 void LexicalAnalyzer::print_ident_table(std::ostream & os) const {
-	const auto indent = std::setw(20);
-	os << "\n" << indent << "IDENT TABLE" << "\n\n";
-	os << indent << "IDENT TYPE" << indent << "IDENT NAME" << std::endl;
+	const auto title_indent = std::setw(20);
+	const auto value_indent = std::setw(25);
+	os << "\n" << title_indent << "IDENT TABLE" << "\n\n";
+	os << title_indent << "IDENT TYPE" << value_indent << "IDENT NAME" << std::endl;
 	for (const auto & ident : this->_ident_table) {
-		os << indent << Ident::type_to_str(ident.second.type());
-		os << indent << ident.second.name();
+		os << title_indent << Ident::type_to_str(ident.second.type());
+		os << value_indent << ident.second.name();
 		os << std::endl;
 	}
 }
