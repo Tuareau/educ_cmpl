@@ -16,7 +16,8 @@ PROGRAMM;
 	ENDWHILE;
 
 	write(y);
-
+	
+	/*
 	FUNC length(string s);
 		return strlen(s);
 	ENDF;
@@ -35,4 +36,5 @@ PROGRAMM;
 		ENDWHILE;
 		return n;
 	ENDF;
+	*/
 END.
