@@ -144,11 +144,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="header\compiler.h" />
+    <ClInclude Include="header\constant.h" />
     <ClInclude Include="header\ident.h" />
     <ClInclude Include="header\lexical_analyzer.h" />
     <ClInclude Include="header\token.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\constant.cpp" />
     <ClCompile Include="source\ident.cpp" />
     <ClCompile Include="source\lexical_analyzer.cpp" />
     <ClCompile Include="source\main.cpp" />

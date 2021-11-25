@@ -328,3 +328,35 @@ void LexicalAnalyzer::print_ident_table(std::ostream & os) const {
 		os << std::endl;
 	}
 }
+
+void LexicalAnalyzer::construct_constant_table() {
+	for (const auto & token_iter : this->_token_table) {
+		const auto & [pos, token] = token_iter;
+		if (token.type() == Token::Type::CONSTANT) {
+			auto lexeme = token.value();
+			if (!this->_constant_table.contains(lexeme)) {
+				if (lexeme.at(0) == '"') {
+					this->_constant_table[lexeme] = Constant(Constant::Type::STRING, lexeme);
+				}
+				else if (std::isdigit(lexeme.at(0))) {
+					this->_constant_table[lexeme] = Constant(Constant::Type::INTEGER, lexeme);
+				}
+				else {
+					throw std::logic_error("LexicalAnalyzer::construct_constant_table(): couldn't recognize constant");
+				}
+			}
+		}
+	}
+}
+
+void LexicalAnalyzer::print_constant_table(std::ostream & os) const {
+	const auto title_indent = std::setw(20);
+	const auto value_indent = std::setw(25);
+	os << "\n" << title_indent << "CONSTANTS TABLE" << "\n\n";
+	os << title_indent << "CONSTANT TYPE" << value_indent << "CONSTANT VALUE" << std::endl;
+	for (const auto & constant : this->_constant_table) {
+		os << title_indent << Constant::type_to_str(constant.second.type());
+		os << value_indent << constant.second.value();
+		os << std::endl;
+	}
+}

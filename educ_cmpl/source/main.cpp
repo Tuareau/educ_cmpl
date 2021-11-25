@@ -16,6 +16,8 @@ int main(int argc, char * argv[]) {
 	la.print_token_table(std::cout);
 	la.construct_ident_table();
 	la.print_ident_table(std::cout);
+	la.construct_constant_table();
+	la.print_constant_table(std::cout);
 
 	return 0;
 }
