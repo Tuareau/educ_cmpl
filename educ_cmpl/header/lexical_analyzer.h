@@ -15,12 +15,14 @@
 
 #include "token.h"
 #include "ident.h"
+#include "constant.h"
 
 class LexicalAnalyzer
 {
 private:
 	std::map<size_t, Token> _token_table;
 	std::map<std::string, Ident> _ident_table;
+	std::map<std::string, Constant> _constant_table;
 
 	size_t _tokens_stream_pos;
 
@@ -58,9 +60,11 @@ public:
 
 	void construct_token_table(const std::string & filename);
 	void construct_ident_table();
+	void construct_constant_table();
 
 	void print_token_table(std::ostream & os) const;
 	void print_ident_table(std::ostream & os) const;
+	void print_constant_table(std::ostream & os) const;
 
 	Token get_next_token();	
 	void unget_token();
