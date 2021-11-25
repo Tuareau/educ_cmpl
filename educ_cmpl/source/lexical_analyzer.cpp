@@ -246,10 +246,10 @@ bool LexicalAnalyzer::is_keyword(const std::string & str) const {
 }
 
 Token LexicalAnalyzer::get_next_token() {
-	this->_tokens_stream_pos += 1;
 	const auto pos = this->_tokens_stream_pos;
+	this->_tokens_stream_pos += 1;
 	if (this->_token_table.contains(pos)) {
-		const auto & token = this->_token_table.at(pos);
+		const auto & token = this->_token_table.at(pos);	
 		return Token(token);
 	}
 	return Token();
@@ -326,6 +326,24 @@ void LexicalAnalyzer::print_ident_table(std::ostream & os) const {
 		os << title_indent << Ident::type_to_str(ident.second.type());
 		os << value_indent << ident.second.name();
 		os << std::endl;
+	}
+}
+
+bool LexicalAnalyzer::contains_ident(const std::string & name) const {
+	if (this->_ident_table.contains(name)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+Ident & LexicalAnalyzer::ident_ref(const std::string & name) {
+	if (this->_ident_table.contains(name)) {
+		return this->_ident_table.at(name);
+	}
+	else {
+		throw std::invalid_argument("LexicalAnalyzer::ident_ref(): invalid key, no element in map");
 	}
 }
 

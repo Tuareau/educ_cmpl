@@ -74,6 +74,8 @@ public:
 	size_t tokens_count() const;
 	Token get_token(size_t key) const;
 
+	Ident & ident_ref(const std::string & name);
+	bool contains_ident(const std::string & name) const;
 
 };
 

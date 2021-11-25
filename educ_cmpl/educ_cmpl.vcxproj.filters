@@ -26,6 +26,12 @@
     <ClInclude Include="header\constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\interpreter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\rpn_element.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\token.cpp">
@@ -41,6 +47,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\constant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\interpreter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

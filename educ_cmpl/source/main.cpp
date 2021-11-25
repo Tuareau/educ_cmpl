@@ -2,6 +2,7 @@
 #include <string>
 
 #include "lexical_analyzer.h"
+#include "interpreter.h"
 
 int main(int argc, char * argv[]) {
 	if (argc != 2) {
@@ -18,6 +19,10 @@ int main(int argc, char * argv[]) {
 	la.print_ident_table(std::cout);
 	la.construct_constant_table();
 	la.print_constant_table(std::cout);
+
+	Interpreter ipr;
+	ipr.construct_notation_output(&la);
+	ipr.print_notation(std::cout);
 
 	return 0;
 }

@@ -26,6 +26,8 @@ public:
 	const std::string & value() const;
 	const std::string & name() const;
 
+	bool valid() const;
+
 	static std::string type_to_str(Type type);
 	static Ident::Type str_to_type(const std::string & str);
 };
