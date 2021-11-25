@@ -6,8 +6,6 @@
 #include <string>
 #include <stdexcept>
 
-//class IdentTable;
-
 class Token
 {
 public:

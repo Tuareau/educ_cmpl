@@ -143,7 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="header\compiler.h" />
     <ClInclude Include="header\constant.h" />
     <ClInclude Include="header\rpn_element.h" />
     <ClInclude Include="header\ident.h" />

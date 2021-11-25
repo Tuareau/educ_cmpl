@@ -11,9 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="header\compiler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="header\token.h">
       <Filter>Header Files</Filter>
     </ClInclude>
