@@ -7,11 +7,19 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <map>
 #include <stdexcept>
 
-class RpnElement;
+#include "rpn_element.h"
+
 class LexicalAnalyzer;
 class Token;
+
+enum class OperationsPriority {
+	LOW,
+	MIDDLE,
+	HIGH,	
+};
 
 class Interpreter
 {
@@ -24,7 +32,6 @@ private:
 
 	std::vector<std::string> _operator_keywords = {
 		"WHILE", "DO", "EXITWHILE", "ENDWHILE",
-		"write",
 		"if", "then", "endif", "else",
 	};
 
@@ -45,6 +52,18 @@ private:
 		"IF", "THEN", "ENDIF", "ELSE",
 	};
 
+	std::map<std::string, OperationsPriority> _operations_priorities = {
+		{ "=", OperationsPriority::LOW },
+		{ "==", OperationsPriority::MIDDLE },
+		{ "<", OperationsPriority::MIDDLE },
+		{ ">", OperationsPriority::MIDDLE },
+		{ "+", OperationsPriority::MIDDLE },
+		{ "-", OperationsPriority::MIDDLE },
+		{ "*", OperationsPriority::HIGH },
+		{ "/", OperationsPriority::HIGH },
+		{ "write", OperationsPriority::HIGH },
+	};
+
 	static std::string _condition_operator;
 
 	bool is_operator_keyword(const Token & token) const;
@@ -53,17 +72,16 @@ private:
 	bool is_const_logic_keyword(const Token & token) const;
 	bool is_type_keyword(const Token & token) const;
 
+	void note_operator(const Token & token);
 
 public:
 	Interpreter() = default;
 
 	void construct_notation_output(LexicalAnalyzer * la);
-	void execute_notation();
+	//void execute_notation();
 
 	void print_notation(std::ostream & os) const;
 
 };
-
-std::string Interpreter::_condition_operator = { "!F" };
 
 #endif

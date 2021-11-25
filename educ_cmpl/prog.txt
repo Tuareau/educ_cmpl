@@ -1,17 +1,20 @@
 PROGRAMM;
 
 	integer x;
+	integer h;
 	bool y;
 	string z;
 	x = 10;
+	h = 4;
 	z = "www";
 	WHILE 1
 		DO
 			x = x - 1; /* comment */
-			if x == 5 then
-				y = (length(z) > 5);
+			if x < h then
+				y = (x > 5);
 				EXITWHILE;
-			else y = (length(z) < 5)
+			else y = (x < 5);
+			write(y);
 			endif;
 	ENDWHILE;
 

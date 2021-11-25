@@ -246,10 +246,10 @@ bool LexicalAnalyzer::is_keyword(const std::string & str) const {
 }
 
 Token LexicalAnalyzer::get_next_token() {
-	this->_tokens_stream_pos += 1;
 	const auto pos = this->_tokens_stream_pos;
+	this->_tokens_stream_pos += 1;
 	if (this->_token_table.contains(pos)) {
-		const auto & token = this->_token_table.at(pos);
+		const auto & token = this->_token_table.at(pos);	
 		return Token(token);
 	}
 	return Token();

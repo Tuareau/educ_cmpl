@@ -14,7 +14,7 @@ public:
 		LABEL,
 		GOTO,
 		FUNC,
-		TEMP,
+		DELIMITER,
 	};
 
 private:
@@ -51,6 +51,9 @@ public:
 			break;
 		case Type::OPERATOR:
 			str = "OPERATOR";
+			break;
+		case Type::DELIMITER:
+			str = "DELIMITER";
 			break;
 		default:
 			throw std::invalid_argument("RpnElement::type_as_str(): element type mismatch");
