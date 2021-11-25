@@ -11,6 +11,7 @@
 
 class RpnElement;
 class LexicalAnalyzer;
+class Token;
 
 class Interpreter
 {
@@ -27,7 +28,7 @@ private:
 		"if", "then", "endif", "else",
 	};
 
-	std::vector<std::string> _constant_keywords = {
+	std::vector<std::string> _const_logic_keywords = {
 		"true", "false",
 	};
 
@@ -40,10 +41,18 @@ private:
 	};
 
 	std::vector<std::string> _labels = {
-		"PROGRAMM", "END",
 		"WHILE", "DO", "EXITWHILE", "ENDWHILE",
 		"IF", "THEN", "ENDIF", "ELSE",
 	};
+
+	static std::string _condition_operator;
+
+	bool is_operator_keyword(const Token & token) const;
+	bool is_title_keyword(const Token & token) const;
+	bool is_func_keyword(const Token & token) const;
+	bool is_const_logic_keyword(const Token & token) const;
+	bool is_type_keyword(const Token & token) const;
+
 
 public:
 	Interpreter() = default;
@@ -54,5 +63,7 @@ public:
 	void print_notation(std::ostream & os) const;
 
 };
+
+std::string Interpreter::_condition_operator = { "!F" };
 
 #endif

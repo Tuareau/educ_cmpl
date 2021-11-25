@@ -81,3 +81,48 @@ void Interpreter::print_notation(std::ostream & os) const {
 		os << std::endl;
 	}
 }
+
+bool Interpreter::is_operator_keyword(const Token & token) const {
+	for (const auto & keyword : this->_operator_keywords) {
+		if (keyword == token.value()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Interpreter::is_title_keyword(const Token & token) const {
+	for (const auto & keyword : this->_title_keywords) {
+		if (keyword == token.value()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Interpreter::is_func_keyword(const Token & token) const {
+	for (const auto & keyword : this->_func_keywords) {
+		if (keyword == token.value()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Interpreter::is_const_logic_keyword(const Token & token) const {
+	for (const auto & keyword : this->_const_logic_keywords) {
+		if (keyword == token.value()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Interpreter::is_type_keyword(const Token & token) const {
+	for (const auto & keyword : this->_type_keywords) {
+		if (keyword == token.value()) {
+			return true;
+		}
+	}
+	return false;
+}
