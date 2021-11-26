@@ -1,17 +1,13 @@
 #include "ident.h"
 
 Ident::Ident()
-	: _name(""), _value(""), _type(Type::NONE) {}
+	: _name(""), _type(Type::NONE) {}
 
 Ident::Ident(Type type, const std::string & name, const std::string & value)
-	: _name(name), _value(value), _type(type) {}
+	: _name(name), _type(type) {}
 
 Ident::Type Ident::type() const {
 	return this->_type;
-}
-
-const std::string & Ident::value() const {
-	return this->_value;
 }
 
 const std::string & Ident::name() const {

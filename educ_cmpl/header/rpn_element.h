@@ -9,7 +9,8 @@ class RpnElement
 {
 public:
 	enum class Type {
-		OPERAND,
+		OPERAND_IDENT,
+		OPERAND_CONSTANT,
 		OPERATOR,
 		LABEL,
 		GOTO,
@@ -46,8 +47,11 @@ public:
 		case Type::LABEL:
 			str = "LABEL";
 			break;
-		case Type::OPERAND:
-			str = "OPERAND";
+		case Type::OPERAND_IDENT:
+			str = "OPERAND_IDENT";
+			break;
+		case Type::OPERAND_CONSTANT:
+			str = "OPERAND_CONSTANT";
 			break;
 		case Type::OPERATOR:
 			str = "OPERATOR";

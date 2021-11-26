@@ -378,3 +378,21 @@ void LexicalAnalyzer::print_constant_table(std::ostream & os) const {
 		os << std::endl;
 	}
 }
+
+bool LexicalAnalyzer::contains_constant(const std::string & name) const {
+	if (this->_constant_table.contains(name)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+Constant & LexicalAnalyzer::constant_ref(const std::string & name) {
+	if (this->_constant_table.contains(name)) {
+		return this->_constant_table.at(name);
+	}
+	else {
+		throw std::invalid_argument("LexicalAnalyzer::constant_ref(): invalid key, no element in map");
+	}
+}

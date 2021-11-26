@@ -32,7 +32,7 @@ private:
 		"WHILE", "DO", "EXITWHILE", "ENDWHILE",
 		"FUNC", "ENDF", "return", "write",
 		"if", "then", "endif", "else",
-		"true", "false",
+		"true", "false", "endl",
 	};
 
 	std::vector<std::string> _operation_signs = {
@@ -76,6 +76,9 @@ public:
 
 	Ident & ident_ref(const std::string & name);
 	bool contains_ident(const std::string & name) const;
+
+	Constant & constant_ref(const std::string & name);
+	bool contains_constant(const std::string & name) const;
 
 };
 

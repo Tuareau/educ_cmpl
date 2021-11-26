@@ -1,43 +1,59 @@
 PROGRAMM;
 
+	/* factorial */
+	integer n;
+	integer i;
+	integer res;
+
+	n = 10;
+	res = 1;
+
+	i = 1;
+	WHILE i < n
+		DO
+			res = res * i;
+			i = i + 1;
+			if i == n then
+				res = res * i;
+				EXITWHILE;
+			endif;
+	ENDWHILE;
+
+	string m1;
+	string m2;
+	m1 = "factorial(";
+	m2 = ") = ";
+
+	endl;
+	write(m1);
+	write(n);
+	write(m2);
+	write(res);
+	endl;
+	write("DONE");
+	endl;
+
+	/* example */
 	integer x;
 	integer h;
 	bool y;
-	string z;
-	x = 10;
+	string z; 
+	x = 10 - 2 * 3 + 1;
 	h = 4;
 	z = "www";
 	WHILE 1
 		DO
-			x = x - 1; /* comment */
+			x = x - 1;
 			if x < h then
-				y = (x > 5);
+				y = (x < 2);
 				EXITWHILE;
-			else y = (x < 5);
-			write(y);
+			else y = (x > 2);
 			endif;
 	ENDWHILE;
 
+	string l;
+	l = "y = ";
+	write(l);
 	write(y);
-	
-	/*
-	FUNC length(string s);
-		return strlen(s);
-	ENDF;
-
-	FUNC strlen(string s);
-		integer n;
-		string t;
-		t = "";
-		n = 0;
-		WHILE 1
-			DO
-				if t == s then EXITWHILE;
-				endif;
-				t = t + "w";
-				n = n + 1;
-		ENDWHILE;
-		return n;
-	ENDF;
-	*/
+	endl;
 END.
