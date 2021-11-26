@@ -13,7 +13,6 @@ public:
 
 private:
 	Type _type;
-	std::string _value;
 	std::string _name;
 
 public:
@@ -23,7 +22,6 @@ public:
 	Ident & operator=(const Ident & other) = default;
 
 	Type type() const;
-	const std::string & value() const;
 	const std::string & name() const;
 
 	bool valid() const;

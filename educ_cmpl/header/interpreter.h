@@ -9,6 +9,8 @@
 #include <stack>
 #include <map>
 #include <stdexcept>
+#include <functional>
+#include <algorithm>
 
 #include "rpn_element.h"
 
@@ -24,7 +26,16 @@ enum class OperationsPriority {
 class Interpreter
 {
 private:
+	LexicalAnalyzer * _la;
+
 	std::vector<RpnElement> _reverse_notation;
+
+	std::map<std::string, int> _int_values;
+	std::map<std::string, std::string> _str_values;
+	std::map<std::string, bool> _bool_values = {
+		{ "false", false },
+		{ "true", true },
+	};
 
 	std::vector<std::string> _type_keywords = {
 		"integer", "bool", "string",
@@ -32,7 +43,7 @@ private:
 
 	std::vector<std::string> _operator_keywords = {
 		"WHILE", "DO", "EXITWHILE", "ENDWHILE",
-		"if", "then", "endif", "else",
+		"if", "then", "endif", "else", "endl",
 	};
 
 	std::vector<std::string> _const_logic_keywords = {
@@ -65,6 +76,7 @@ private:
 	};
 
 	static std::string _condition_operator;
+	static std::string _endline_operator;
 
 	bool is_operator_keyword(const Token & token) const;
 	bool is_title_keyword(const Token & token) const;
@@ -74,13 +86,21 @@ private:
 
 	void note_operator(const Token & token);
 
-public:
-	Interpreter() = default;
+	std::vector<RpnElement>::iterator shift_to_label(std::vector<RpnElement>::iterator pos, const RpnElement & label);
 
-	void construct_notation_output(LexicalAnalyzer * la);
-	//void execute_notation();
+	void execute_integer_operation(const std::string & op, std::stack<RpnElement> & stack);
+	void execute_string_operation(const std::string & op, std::stack<RpnElement> & stack);
+	void execute_logic_operation(const std::string & op, std::stack<RpnElement> & stack);
+
+public:
+	Interpreter(LexicalAnalyzer * la) : _la(la) {}
+
+	void initialize_memory();
+	void construct_notation_output();
+	void execute_notation();
 
 	void print_notation(std::ostream & os) const;
+	void print_memory(std::ostream & os) const;
 
 };
 
