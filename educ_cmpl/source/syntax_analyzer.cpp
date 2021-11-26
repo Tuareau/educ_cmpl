@@ -57,11 +57,10 @@ bool syntax_analyzer::PROGRAM_BODY()
 
 bool syntax_analyzer::LANG_CONSTRUCT()
 {
-	auto token = get_token();
 	VAR_DECL();
 	FUNC_DEF();
-	ARYTHM_EXPR(); get_token() != “; ”;
-	FUNC_CALL(); get_token() != “; ”;
+	ARYTHM_EXPR(); get_token() != ";";
+	FUNC_CALL(); get_token() != ";";
 	LANG_OPERATOR();
 }
 
@@ -91,12 +90,31 @@ bool syntax_analyzer::TYPE()
 
 bool syntax_analyzer::IDENT()
 {
-	return false;
+	auto token = get_token();
+	if (token.type() != Token::Type::IDENT)
+	{
+		cout << "Expecter identifier." << endl;
+		return false;
+	}
+	return true;
 }
 
 bool syntax_analyzer::FUNC_DEF()
 {
-	return false;
+	auto token = get_token();
+	FUNC_DECL();
+	FUNC_BODY();
+	if (token.value() != "ENDF")
+	{
+		cout << "Expected 'ENDF'" << endl;
+		return false;
+	}
+	if (token.value() != ";")
+	{
+		cout << "Expected ';'" << endl;
+		return false;
+	}
+	return true;
 }
 
 bool syntax_analyzer::FUNC_DECL()
@@ -151,7 +169,13 @@ bool syntax_analyzer::ARYTHM_OPERATION()
 
 bool syntax_analyzer::OP()
 {
-	return false;
+	auto token = get_token();
+	if (token.type() != Token::Type::OPERATION_SIGN)
+	{
+		cout << "Expected operation sign." << endl;
+		return false;
+	}
+	return true;
 }
 
 bool syntax_analyzer::OPERAND()
@@ -162,9 +186,9 @@ bool syntax_analyzer::OPERAND()
 bool syntax_analyzer::CONST_EXPR()
 {
 	auto token = get_token();
-	if (token.)
+	if (token.type() != Token::Type::CONSTANT)
 	{
-		cout << "" << endl;
+		cout << "Expected constant!" << endl;
 		return false;
 	}
 	return true;
