@@ -3,9 +3,6 @@
 using std::cout;
 using std::cin;
 using std::endl;
-//typedef enum class RET_ERR {
-//	OK, TYPE, OPERATOR, OPERATION, KEYWORDS, DELIMITERS, OPER_SIGN
-//}ret;
 
 syntax_analyzer::~syntax_analyzer()
 {
@@ -22,7 +19,7 @@ void syntax_analyzer::synt_analyz()
 
 Token syntax_analyzer::get_token() { return (LexA->get_next_token()); }
 
-bool syntax_analyzer::S()
+syntax_analyzer::Result syntax_analyzer::S()
 {
 	auto token = get_token();
 	if (token.value() != "PROGRAMM") {
@@ -48,27 +45,72 @@ bool syntax_analyzer::S()
 	return true;
 }
 
-bool syntax_analyzer::PROGRAM_BODY()
+syntax_analyzer::Result syntax_analyzer::PROGRAM_BODY()
 {
-	if (!LANG_CONSTRUCT())
-		return false;
-	return true;
+	auto found = Statement::UNRECOGNIZED;
+	auto result = Result::SUCCESS;
+	while (result != Result::NOT_FOUND) {
+		result = this->LANG_CONSTRUCT();
+		if (result == Result::ERROR)
+			return result;
+		else if (result == Result::SUCCESS)
+			found = Statement::RECOGNIZED;
+	}
+	if (found == Statement::RECOGNIZED)
+		result = Result::SUCCESS;
+	return result;
 }
 
-bool syntax_analyzer::LANG_CONSTRUCT()
+syntax_analyzer::Result syntax_analyzer::LANG_CONSTRUCT()
 {
-	VAR_DECL();
-	FUNC_DEF();
-	ARYTHM_EXPR(); get_token() != ";";
-	FUNC_CALL(); get_token() != ";";
-	LANG_OPERATOR();
+	auto result = VAR_DECL();
+	if (result != Result::NOT_FOUND)
+		return result;
+
+	result = FUNC_DEF();
+	if (result != Result::NOT_FOUND)
+		return result;
+
+	result = ARYTHM_EXPR();
+	if (result != Result::NOT_FOUND) {
+		if (result == Result::SUCCESS) {
+			auto token = get_token();
+			if (token.value() != ";") {
+				cout << "Expected ';'." << endl;
+				return Result::ERROR;
+			}
+			else
+				return Result::SUCCESS;
+		} else {
+			return Result::ERROR;
+		}
+	}
+
+	result = FUNC_CALL();
+	if (result != Result::NOT_FOUND) {
+		if (result == Result::SUCCESS) {
+			auto token = get_token();
+			if (token.value() != ";") {
+				cout << "Expected ';'." << endl;
+				return Result::ERROR;
+			}
+			else
+				return Result::SUCCESS;
+		}
+		else {
+			return Result::ERROR;
+		}
+	}
+
+	result = LANG_OPERATOR();
+	return result;
 }
 
-bool syntax_analyzer::VAR_DECL()
+syntax_analyzer::Result syntax_analyzer::VAR_DECL()
 {
-	auto token = get_token();
 	TYPE();
 	IDENT();
+	auto token = get_token();
 	if (token.value() != ";")
 	{
 		cout << "Expected ';'" << endl;
@@ -77,10 +119,10 @@ bool syntax_analyzer::VAR_DECL()
 	return true;
 }
 
-bool syntax_analyzer::TYPE()
+syntax_analyzer::Result syntax_analyzer::TYPE()
 {
 	auto token = get_token();
-	if (token.value() != "integer" || token.value() != "string" || token.value() != "bool")
+	if (token.value() != "integer" || token.value() != "string" || token.value() != "syntax_analyzer::Result")
 	{
 		cout << "Expected type." << endl;
 		return false;
@@ -88,7 +130,7 @@ bool syntax_analyzer::TYPE()
 	return true;
 }
 
-bool syntax_analyzer::IDENT()
+syntax_analyzer::Result syntax_analyzer::IDENT()
 {
 	auto token = get_token();
 	if (token.type() != Token::Type::IDENT)
@@ -99,7 +141,7 @@ bool syntax_analyzer::IDENT()
 	return true;
 }
 
-bool syntax_analyzer::FUNC_DEF()
+syntax_analyzer::Result syntax_analyzer::FUNC_DEF()
 {
 	auto token = get_token();
 	FUNC_DECL();
@@ -117,57 +159,57 @@ bool syntax_analyzer::FUNC_DEF()
 	return true;
 }
 
-bool syntax_analyzer::FUNC_DECL()
+syntax_analyzer::Result syntax_analyzer::FUNC_DECL()
 {
 	return false;
 }
 
-bool syntax_analyzer::FUNC_PARAM()
+syntax_analyzer::Result syntax_analyzer::FUNC_PARAM()
 {
 	return false;
 }
 
-bool syntax_analyzer::FUNC_BODY()
+syntax_analyzer::Result syntax_analyzer::FUNC_BODY()
 {
 	return false;
 }
 
-bool syntax_analyzer::FUNC_CONSTRUCT()
+syntax_analyzer::Result syntax_analyzer::FUNC_CONSTRUCT()
 {
 	return false;
 }
 
-bool syntax_analyzer::RETURN_OP()
+syntax_analyzer::Result syntax_analyzer::RETURN_OP()
 {
 	return false;
 }
 
-bool syntax_analyzer::RETURN_EXPR()
+syntax_analyzer::Result syntax_analyzer::RETURN_EXPR()
 {
 	return false;
 }
 
-bool syntax_analyzer::FUNC_CALL()
+syntax_analyzer::Result syntax_analyzer::FUNC_CALL()
 {
 	return false;
 }
 
-bool syntax_analyzer::ARG()
+syntax_analyzer::Result syntax_analyzer::ARG()
 {
 	return false;
 }
 
-bool syntax_analyzer::ARYTHM_EXPR()
+syntax_analyzer::Result syntax_analyzer::ARYTHM_EXPR()
 {
 	return false;
 }
 
-bool syntax_analyzer::ARYTHM_OPERATION()
+syntax_analyzer::Result syntax_analyzer::ARYTHM_OPERATION()
 {
 	return false;
 }
 
-bool syntax_analyzer::OP()
+syntax_analyzer::Result syntax_analyzer::OP()
 {
 	auto token = get_token();
 	if (token.type() != Token::Type::OPERATION_SIGN)
@@ -178,12 +220,12 @@ bool syntax_analyzer::OP()
 	return true;
 }
 
-bool syntax_analyzer::OPERAND()
+syntax_analyzer::Result syntax_analyzer::OPERAND()
 {
 	return false;
 }
 
-bool syntax_analyzer::CONST_EXPR()
+syntax_analyzer::Result syntax_analyzer::CONST_EXPR()
 {
 	auto token = get_token();
 	if (token.type() != Token::Type::CONSTANT)
@@ -194,17 +236,17 @@ bool syntax_analyzer::CONST_EXPR()
 	return true;
 }
 
-bool syntax_analyzer::LOGICAL_EXPR()
+syntax_analyzer::Result syntax_analyzer::LOGICAL_EXPR()
 {
 	return false;
 }
 
-bool syntax_analyzer::LOGICAL_OPERATION()
+syntax_analyzer::Result syntax_analyzer::LOGICAL_OPERATION()
 {
 	return false;
 }
 
-bool syntax_analyzer::LOGICAL_OP()
+syntax_analyzer::Result syntax_analyzer::LOGICAL_OP()
 {
 	auto token = get_token();
 	if (token.value() == ">" || token.value() == "<" || token.value() == "==")
@@ -215,32 +257,32 @@ bool syntax_analyzer::LOGICAL_OP()
 	return true;
 }
 
-bool syntax_analyzer::LOGICAL_STATEMENT()
+syntax_analyzer::Result syntax_analyzer::LOGICAL_STATEMENT()
 {
 	return false;
 }
 
-bool syntax_analyzer::LANG_OPERATOR()
+syntax_analyzer::Result syntax_analyzer::LANG_OPERATOR()
 {
 	return false;
 }
 
-bool syntax_analyzer::WRITE_OP()
+syntax_analyzer::Result syntax_analyzer::WRITE_OP()
 {
 	return false;
 }
 
-bool syntax_analyzer::WHILE_OP()
+syntax_analyzer::Result syntax_analyzer::WHILE_OP()
 {
 	return false;
 }
 
-bool syntax_analyzer::IF_OP()
+syntax_analyzer::Result syntax_analyzer::IF_OP()
 {
 	return false;
 }
 
-bool syntax_analyzer::OPERATION()
+syntax_analyzer::Result syntax_analyzer::OPERATION()
 {
 	return false;
 }

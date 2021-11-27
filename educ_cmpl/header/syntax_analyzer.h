@@ -5,38 +5,41 @@ class syntax_analyzer
 {
 private:
 	LexicalAnalyzer* LexA;
-	/*typedef enum class bool {
-		OK, TYPE, OPERATOR, OPERATION, KEYWORDS, DELIMITERS, OPER_SIGN
-	}ret;*/
-	bool S();
-	bool PROGRAM_BODY();
-	bool LANG_CONSTRUCT();
-	bool VAR_DECL();
-	bool TYPE();
-	bool IDENT();
-	bool FUNC_DEF();
-	bool FUNC_DECL();
-	bool FUNC_PARAM();
-	bool FUNC_BODY();
-	bool FUNC_CONSTRUCT();
-	bool RETURN_OP();
-	bool RETURN_EXPR();
-	bool FUNC_CALL();
-	bool ARG();
-	bool ARYTHM_EXPR();
-	bool ARYTHM_OPERATION();
-	bool OP();
-	bool OPERAND();
-	bool CONST_EXPR();
-	bool LOGICAL_EXPR();
-	bool LOGICAL_OPERATION();
-	bool LOGICAL_OP();
-	bool LOGICAL_STATEMENT();
-	bool LANG_OPERATOR();
-	bool WRITE_OP();
-	bool WHILE_OP();
-	bool IF_OP();
-	bool OPERATION();
+	enum class Result {
+		SUCCESS, ERROR, NOT_FOUND
+	};
+	enum class Statement {
+		RECOGNIZED, UNRECOGNIZED
+	};
+	syntax_analyzer::Result S();
+	syntax_analyzer::Result PROGRAM_BODY();
+	syntax_analyzer::Result LANG_CONSTRUCT();
+	syntax_analyzer::Result VAR_DECL();
+	syntax_analyzer::Result TYPE();
+	syntax_analyzer::Result IDENT();
+	syntax_analyzer::Result FUNC_DEF();
+	syntax_analyzer::Result FUNC_DECL();
+	syntax_analyzer::Result FUNC_PARAM();
+	syntax_analyzer::Result FUNC_BODY();
+	syntax_analyzer::Result FUNC_CONSTRUCT();
+	syntax_analyzer::Result RETURN_OP();
+	syntax_analyzer::Result RETURN_EXPR();
+	syntax_analyzer::Result FUNC_CALL();
+	syntax_analyzer::Result ARG();
+	syntax_analyzer::Result ARYTHM_EXPR();
+	syntax_analyzer::Result ARYTHM_OPERATION();
+	syntax_analyzer::Result OP();
+	syntax_analyzer::Result OPERAND();
+	syntax_analyzer::Result CONST_EXPR();
+	syntax_analyzer::Result LOGICAL_EXPR();
+	syntax_analyzer::Result LOGICAL_OPERATION();
+	syntax_analyzer::Result LOGICAL_OP();
+	syntax_analyzer::Result LOGICAL_STATEMENT();
+	syntax_analyzer::Result LANG_OPERATOR();
+	syntax_analyzer::Result WRITE_OP();
+	syntax_analyzer::Result WHILE_OP();
+	syntax_analyzer::Result IF_OP();
+	syntax_analyzer::Result OPERATION();
 public:
 	syntax_analyzer(LexicalAnalyzer* la);
 	void synt_analyz();

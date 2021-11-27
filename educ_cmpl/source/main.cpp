@@ -2,7 +2,7 @@
 #include <string>
 
 #include "lexical_analyzer.h"
-#include "syntax_analyzer.h"
+//#include "syntax_analyzer.h"
 #include "interpreter.h"
 
 int main(int argc, char * argv[]) {
