@@ -16,7 +16,7 @@ educational compiler
 			WHILE, DO, EXITWHILE, ENDWHILE,
 			FUNC, ENDF, return, write,
 			if, then, endif, else,
-			true, false,
+			true, false, endl,
 		}
 
 		{
@@ -66,7 +66,6 @@ educational compiler
 		<ARGS>
 		<ARG>
 
-
 		<ARITHM_OPERATION>
 		<OP>
 		<OPERAND>
@@ -85,8 +84,10 @@ educational compiler
 		<LOGICAL_OP>
 		<LOGICAL_STATEMENT>
 
-		<WHILE_OP>	
+		<WHILE_OP>
 		<IF_OP>	
+		<WRITE_OP>
+		<ENDL_OP>
 		<OPERATIONS_SEQUENCE>
 		<OPERATION>	
 	}	
@@ -178,9 +179,11 @@ educational compiler
 		<LOGICAL_STATEMENT> ::= <IDENT> | <CONST_INT> | <CONST_BOOL> | <FUNC_CALL> 
 
 		* language operators *
-		<LANG_OPERATOR> ::= <WHILE_OP> | <IF_OP> | <WRITE_OP>
+		<LANG_OPERATOR> ::= <WHILE_OP> | <IF_OP> | <WRITE_OP> | <ENDL_OP>
 
 		<WRITE_OP> ::= “write” “(“ <ARGS> “)” “;”
+
+		<ENDL_OP> ::= “endl” “;”
 
 		<WHILE_OP> ::= “WHILE” <LOGICAL_EXPR> “DO” <OPERATIONS_SEQUENCE> “ENDWHILE” “;”
 	
