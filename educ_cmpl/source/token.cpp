@@ -1,10 +1,10 @@
 #include "token.h"
 
 Token::Token()
-	: _type(Type::NONE), _value("") {}
+	: _type(Type::NONE), _value(""), _line(0) {}
 
-Token::Token(Type type, std::string value) 
-	: _type(type), _value(value) {}
+Token::Token(Type type, size_t line, std::string value) 
+	: _type(type), _value(value), _line(line) {}
 
 Token::Type Token::type() const {
 	return _type;
@@ -12,6 +12,10 @@ Token::Type Token::type() const {
 
 const std::string & Token::value() const {
 	return _value;
+}
+
+size_t Token::line() const {
+	return _line;
 }
 
 std::string Token::type_to_str(Type type) {

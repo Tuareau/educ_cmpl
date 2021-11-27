@@ -6,7 +6,7 @@
 
 int main(int argc, char * argv[]) {
 	if (argc != 2) {
-		std::cout << "USAGE: prog filename.txt";
+		std::cout << "USAGE: interpreter filename";
 		return 1;
 	}
 

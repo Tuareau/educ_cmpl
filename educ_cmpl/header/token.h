@@ -13,17 +13,19 @@ public:
 
 private:
 	Type _type;
+	size_t _line;
 	std::string _value;
 
 public:
 	Token();
-	explicit Token(Type type, std::string value = std::string());
+	explicit Token(Type type, size_t line, std::string value = std::string());
 	Token(const Token & other) = default;
 
 	Token & operator=(const Token & other) = default;
 
 	Type type() const;
 	const std::string & value() const;
+	size_t line() const;
 
 	static std::string type_to_str(Type type);
 

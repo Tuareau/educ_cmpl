@@ -11,19 +11,24 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 		throw std::ios_base::failure("LexicalAnalyzer::construct_token_table(): couldn't open file");
 	}
 
-	size_t index = 0;
+
+	size_t index = 0; // for adding elemnt to map
 	int symbol, err_symbol;
 	this->_state = State::START;
 
 	Token::Type token_type;
 	std::string token_value;
+	size_t token_line = 1;
 
 	symbol = fin.get();
-	while (fin.good() && !fin.eof() /*&& fin.peek() != EOF*/) {
+	while (fin.good() && !fin.eof()) {
 		switch (this->_state) {
 			case State::START:
 			{
 				while (std::isspace(symbol)) {
+					if (symbol == '\n') {
+						++token_line;
+					}
 					symbol = fin.get();
 				}
 
@@ -56,7 +61,7 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 						token_value += next;
 					}
 
-					this->_token_table[index++] = Token(token_type, token_value);
+					this->_token_table[index++] = Token(token_type, token_line, token_value);
 
 					if (next == '=') {
 						symbol = fin.get();
@@ -78,7 +83,7 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 						token_type = Token::Type::OPERATION_SIGN;
 						token_value = std::string((std::stringstream() << static_cast<char>(symbol)).str());
 
-						this->_token_table[index++] = Token(token_type, token_value);
+						this->_token_table[index++] = Token(token_type, token_line, token_value);
 
 						symbol = fin.get();
 						this->_state = State::START;
@@ -112,7 +117,7 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 					symbol = fin.get();
 				}
 
-				this->_token_table[index++] = Token(token_type, token_value);
+				this->_token_table[index++] = Token(token_type, token_line, token_value);
 
 				this->_state = State::START;
 				break;
@@ -124,7 +129,7 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 					token_type = Token::Type::DELIMITER;
 					token_value = std::string((std::stringstream() << static_cast<char>(symbol)).str());
 
-					this->_token_table[index++] = Token(token_type, token_value);
+					this->_token_table[index++] = Token(token_type, token_line, token_value);
 
 					symbol = fin.get();
 					this->_state = State::START;
@@ -159,7 +164,7 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 				else {
 					token_type = Token::Type::IDENT;
 				}
-				this->_token_table[index++] = Token(token_type, token_value);
+				this->_token_table[index++] = Token(token_type, token_line, token_value);
 
 				this->_state = State::START;
 				break;
@@ -200,8 +205,10 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 void LexicalAnalyzer::print_token_table(std::ostream & os) const {
 	const auto indent = std::setw(20);
 	os << "\n" << indent << "TOKEN TABLE" << "\n\n";
-	os << indent << "TOKEN TYPE" << indent << "TOKEN VALUE" << std::endl;
+	os << std::setw(7) << "LINE" << indent << "TOKEN TYPE" 
+		<< indent << "TOKEN VALUE" << std::endl;
 	for (const auto & token : this->_token_table) {
+		os << std::setw(7) << token.second.line();
 		os << indent << Token::type_to_str(token.second.type());
 		os << indent << token.second.value();
 		os << std::endl;
