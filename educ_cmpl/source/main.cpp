@@ -2,7 +2,7 @@
 #include <string>
 
 #include "lexical_analyzer.h"
-//#include "syntax_analyzer.h"
+#include "syntax_analyzer.h"
 #include "interpreter.h"
 
 int main(int argc, char * argv[]) {
@@ -17,7 +17,9 @@ int main(int argc, char * argv[]) {
 	la.construct_token_table(filename);
 	la.print_token_table(std::cout);
 
-	// place for syntax analyzer
+	syntax_analyzer sa(&la);
+	if (!sa.synt_analyz())
+		exit(1);
 
 	la.construct_ident_table();
 	la.print_ident_table(std::cout);
