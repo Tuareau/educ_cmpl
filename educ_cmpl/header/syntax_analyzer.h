@@ -1,45 +1,65 @@
 #pragma once
-#include "lexical_analyzer.h"
 
-class syntax_analyzer
+#include "lexical_analyzer.h"
+#include "token.h"
+
+class SyntaxAnalyzer
 {
 private:
-	LexicalAnalyzer* LexA;
-	/*typedef enum class bool {
-		OK, TYPE, OPERATOR, OPERATION, KEYWORDS, DELIMITERS, OPER_SIGN
-	}ret;*/
-	bool S();
-	bool PROGRAM_BODY();
-	bool LANG_CONSTRUCT();
-	bool VAR_DECL();
-	bool TYPE();
-	bool IDENT();
-	bool FUNC_DEF();
-	bool FUNC_DECL();
-	bool FUNC_PARAM();
-	bool FUNC_BODY();
-	bool FUNC_CONSTRUCT();
-	bool RETURN_OP();
-	bool RETURN_EXPR();
-	bool FUNC_CALL();
-	bool ARG();
-	bool ARYTHM_EXPR();
-	bool ARYTHM_OPERATION();
-	bool OP();
-	bool OPERAND();
-	bool CONST_EXPR();
-	bool LOGICAL_EXPR();
-	bool LOGICAL_OPERATION();
-	bool LOGICAL_OP();
-	bool LOGICAL_STATEMENT();
-	bool LANG_OPERATOR();
-	bool WRITE_OP();
-	bool WHILE_OP();
-	bool IF_OP();
-	bool OPERATION();
+	LexicalAnalyzer * _la;
+
+	enum class Result {
+		ERROR,
+		SUCCESS,
+		NOT_FOUND,
+	};
+
+	enum class Statement {
+		RECOGNIZED,
+		UNRECOGNIZED,
+	};
+
+	Result START() const;
+	Result PROGRAM_BODY() const;
+	Result LANG_CONSTRUCT() const;
+
+	Result VAR_DECL() const;
+	Result ARYTHM_EXPR() const;
+	Result LANG_OPERATOR() const;
+
+	Result FUNC_DEF() const;
+	Result FUNC_DECL() const;
+	Result FUNC_PARAM() const;
+	Result FUNC_BODY() const;
+	Result FUNC_CONSTRUCT() const;
+	Result RETURN_OP() const;
+	Result RETURN_EXPR() const;
+	Result FUNC_CALL() const;
+	Result ARG() const;
+
+
+	Result ARYTHM_OPERATION() const;
+	Result OPERAND() const;
+	Result CONST_EXPR() const;
+
+	Result LOGICAL_EXPR() const;
+	//Result LOGICAL_OPERATION() const;
+	//Result LOGICAL_OP() const;
+	//Result LOGICAL_STATEMENT() const;
+
+	//Result LANG_OPERATOR() const;
+	//Result WRITE_OP() const;
+	//Result WHILE_OP() const;
+	//Result IF_OP() const;
+	//Result OPERATION() const;
+
+	void print_error(const std::string & expected, const Token & token) const;
+	void print_warning(const std::string & warning) const;
+
 public:
-	syntax_analyzer(LexicalAnalyzer* la);
-	void synt_analyz();
-	Token get_token();
-	~syntax_analyzer();
+	SyntaxAnalyzer() = delete;
+	SyntaxAnalyzer(LexicalAnalyzer * la);
+
+	bool analyze_syntax() const;
+
 };

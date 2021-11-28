@@ -26,6 +26,8 @@ private:
 
 	size_t _tokens_stream_pos;
 
+	std::string _filename;
+
 	std::vector<std::string> _keywords = {
 		"PROGRAMM", "END",
 		"integer", "bool", "string",
@@ -56,9 +58,9 @@ private:
 	bool is_decl_keyword(const std::string & str) const;
 
 public:
-	LexicalAnalyzer();
+	LexicalAnalyzer(const std::string & filename);
 
-	void construct_token_table(const std::string & filename);
+	void construct_token_table();
 	void construct_ident_table();
 	void construct_constant_table();
 
@@ -79,6 +81,8 @@ public:
 
 	Constant & constant_ref(const std::string & name);
 	bool contains_constant(const std::string & name) const;
+
+	std::string get_file_line(size_t line) const;
 
 };
 

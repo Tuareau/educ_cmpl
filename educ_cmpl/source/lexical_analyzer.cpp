@@ -1,16 +1,26 @@
 #include "lexical_analyzer.h"
 
-LexicalAnalyzer::LexicalAnalyzer()
-	: _tokens_stream_pos(0) {}
+LexicalAnalyzer::LexicalAnalyzer(const std::string & filename)
+	: _tokens_stream_pos(0), _filename(filename) {}
 
-void LexicalAnalyzer::construct_token_table(const std::string & filename) {
+std::string LexicalAnalyzer::get_file_line(size_t line) const {
+	std::string result;
+	std::ifstream fin;
+	fin.open(this->_filename, std::ios_base::in);
+	while (fin.good() && line--) {
+		std::getline(fin, result);
+	}
+	fin.close();
+	return result;
+}
+
+void LexicalAnalyzer::construct_token_table() {
 
 	std::fstream fin;
-	fin.open(filename, std::ios_base::in);
+	fin.open(this->_filename, std::ios_base::in);
 	if (!fin.good()) {
 		throw std::ios_base::failure("LexicalAnalyzer::construct_token_table(): couldn't open file");
 	}
-
 
 	size_t index = 0; // for adding elemnt to map
 	int symbol, err_symbol;
@@ -200,6 +210,7 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 			}
 		}
 	} 
+	fin.close();
 }
 
 void LexicalAnalyzer::print_token_table(std::ostream & os) const {

@@ -1,33 +1,35 @@
 	* program *
-	S() {
-		get_token() != “PROGRAMM” -> error()
-		get_token() != ”;” -> error()
+	START() {
+		“PROGRAMM”
+		”;”
 		PROGRAM_BODY();	
-		get_token() != “END” 
-		get_token() != “.”
+		“END” 
+		“.”
 	}
 
 	* program body *
 	PROGRAM_BODY() {
 		while (ok)
-			try LANG_CONSTRUCT()
+			LANG_CONSTRUCT()
 	}
 
 	LANG_CONSTRUCT() {
-		try VAR_DECL();
-		else try FUNC_DEF();
-		else try ARYTHM_EXPR(); get_token() != “;” 
-		else try FUNC_CALL(); get_token() “;” 
-		else try LANG_OPERATOR();
+		VAR_DECL();
+		FUNC_DEF();
+		ARYTHM_EXPR(); “;” 
+		FUNC_CALL(); “;” 
+		LANG_OPERATOR();
 	}
 
 	* variable or function parameter declaration *
 	VAR_DECL() {
-		try TYPE(); try IDENT(); get_token() != ”;”
+		TYPE(); IDENT(); ”;”
 	}
 
 	TYPE() {
-		get_token() != “integer” | “string” | “bool”;
+		“integer”
+		“string”
+		“bool”
 	}
 
 	* identificator *
@@ -37,88 +39,88 @@
 
 	* function definition *
 	FUNC_DEF() {
-		try FUNC_DECL(); try FUNC_BODY(); 
-		get_token() != “ENDF”; 
-		get_token() != “;”
+		FUNC_DECL(); FUNC_BODY(); “ENDF”; “;”
 	}
 
 	FUNC_DECL() {
-		get_token() != “FUNC”;
-		try IDENT();
-		”(“ // дальше пример проверки на символ опускается 
+		“FUNC”;
+		IDENT();
+		”(“
 		while (ok)
-			try FUNC_PARAM(); ","
-		”)” “;”
+			FUNC_PARAM(); ","
+		”)” 
+		“;”
 	}
 
 	FUNC_PARAM() {
-		try TYPE(); try IDENT();
+		TYPE(); IDENT();
 	}
 
 	* function body *
 	FUNC_BODY() {
 		while (ok)
-			try FUNC_CONSTRUCT();
+			FUNC_CONSTRUCT();
 	}
 	
 	FUNC_CONSTRUCT() {
-		try VAR_DECL();
-		else try ARYTHM_EXPR();
-		else try FUNC_CALL(); ”;”  
-		else try LANG_OPERATOR();
-		else try RETURN_OP();
+		VAR_DECL();
+		ARYTHM_EXPR();
+		FUNC_CALL(); ”;”  
+		LANG_OPERATOR();
+		RETURN_OP();
 	}
 
 	* function constructions *
 	RETURN_OP() {
-		“return” 
-		try RETURN_EXPR();
-		”;”
+		“return” RETURN_EXPR(); ”;”
 	}
 
 	RETURN_EXPR() {
-		try FUNC_CALL();
-		else try ARYTHM_EXPR();
-		else try LOGICAL_EXPR();
-		else try IDENT();
+		FUNC_CALL();
+		ARYTHM_EXPR();
+		LOGICAL_EXPR();
+		IDENT();
 	}
 
 	* function call *
 	FUNC_CALL() {
-		try IDENT(); 
+		IDENT(); 
 		”(“ 
 		while (ok)
-			try ARG(); 
+			ARG(); 
 		”)”
 	}
 
 	ARG() {
-		try IDENT();
-		else try CONST_EXPR();
+		IDENT();
+		CONST_EXPR();
 	}
 
 	* arythmetic expression *
 	ARYTHM_EXPR() {
-		try IDENT(); “=” try IDENT(); 
-		else try IDENT(); “=” try ARITHM_OPERATION(); 
-		else try IDENT(); “=” try LOGICAL_EXPR(); 
-		else try IDENT(); “=” try CONST_EXPR(); 
+		IDENT(); “=” IDENT(); 
+		IDENT(); “=” ARITHM_OPERATION(); 
+		IDENT(); “=” LOGICAL_EXPR(); 
+		IDENT(); “=” CONST_EXPR(); 
 	}
 
 	* arythmetic operation *
 	ARITHM_OPERATION() {
-		try OPERAND() try OP() try OPERAND()
-		else try OPERAND()  try OP() try ARITHM_OPERATION() 
+		OPERAND(); OP(); OPERAND();
+		OPERAND(); OP(); ARITHM_OPERATION(); 
 	}
 
 	OP() {
-		try “+” | “-“ | “/” | “*”
+		“+”
+		“-“
+		“/”
+		“*”
 	}
 
 	OPERAND() {
-		try IDENT();
-		else try CONST_EXPR();
-		else try FUNC_CALL();
+		IDENT();
+		CONST_EXPR();
+		FUNC_CALL();
 	}
 
 	* constant expression *
@@ -128,49 +130,56 @@
 
 	* logical expression *
 	LOGICAL_EXPR() {
-		try LOGICAL_OPERATION();
-		else try LOGICAL_STATEMENT();
-		else try “(” LOGICAL_OPERATION(); “)”
+		LOGICAL_OPERATION();
+		LOGICAL_STATEMENT();
+		“(” LOGICAL_OPERATION(); “)”
 	}
 
 	LOGICAL_OPERATION() {
-		try OPERAND(); try LOGICAL_OP(); try OPERAND();
+		OPERAND(); LOGICAL_OP(); OPERAND();
 	}
 
 	LOGICAL_OP() {
-		“>” | “<” | “==”
+		“>”
+		“<”
+		“==”
 	}
 
 	LOGICAL_STATEMENT() {
-		try IDENT();
-		else try is_constant();
-		else try FUNC_CALL(); 
+		IDENT();
+		is_constant();
+		FUNC_CALL(); 
 	}
 
 	* language operators *
 	LANG_OPERATOR() {
-		try WHILE_OP();
-		else try IF_OP();
-		else try WRITE_OP();
+		WHILE_OP();
+		IF_OP();
+		WRITE_OP();
+		ENDL_OP();
+	}
+
+	ENDL_OP {
+		“endl” “;”
 	}
 
 	WRITE_OP() {
-		try “write” “(“ while (ok) try ARG(); try "," “)” “;”
+		“write” “(“ while (ok) ARG(); "," “)” “;”
 	}
 
 	WHILE_OP() { 
-		try “WHILE” LOGICAL_EXPR() “DO” while (ok) { try OPERATION(); } “ENDWHILE” “;”
+		“WHILE” LOGICAL_EXPR(); “DO” while (ok) OPERATION(); “ENDWHILE” “;”
 	}
 
-	<IF_OP> {
-		try “if” LOGICAL_EXPR() “then” while (ok) { try OPERATION(); } “endif” ”;”
-		else try “if” LOGICAL_EXPR() “then” while (ok) { try OPERATION(); } “else” while (ok) { try OPERATION(); } “endif” “;”
+	IF_OP() {
+		“if” LOGICAL_EXPR(); “then” while (ok) OPERATION(); “endif” ”;”
+		“if” LOGICAL_EXPR(); “then” while (ok) OPERATION(); “else” while (ok) OPERATION(); “endif” “;”
 	}
 
 	OPERATION() {
-		try “EXITWHILE” “;”
-		else try LANG_OPERATOR();
-		else try FUNC_CALL(); “;”
-		else try ARYTHM_EXPR(); “;”
-		else try VAR_DECL();
+		“EXITWHILE” “;”
+		LANG_OPERATOR();
+		FUNC_CALL(); “;”
+		ARYTHM_EXPR(); “;”
+		VAR_DECL();
 	}
