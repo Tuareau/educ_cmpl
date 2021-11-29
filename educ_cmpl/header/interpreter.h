@@ -102,6 +102,8 @@ public:
 	void print_notation(std::ostream & os) const;
 	void print_memory(std::ostream & os) const;
 
+	static bool is_operation_higher_priority(const std::string & oper1, const std::string & oper2);
+
 };
 
 #endif

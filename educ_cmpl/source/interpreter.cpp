@@ -75,6 +75,32 @@ void Interpreter::print_memory(std::ostream & os) const {
 	}
 }
 
+bool Interpreter::is_operation_higher_priority(const std::string & oper1, const std::string & oper2) {
+	std::map<std::string, OperationsPriority> priorities = {
+	{ "=", OperationsPriority::LOW },
+	{ "==", OperationsPriority::MIDDLE },
+	{ "<", OperationsPriority::MIDDLE },
+	{ ">", OperationsPriority::MIDDLE },
+	{ "+", OperationsPriority::MIDDLE },
+	{ "-", OperationsPriority::MIDDLE },
+	{ "*", OperationsPriority::HIGH },
+	{ "/", OperationsPriority::HIGH },
+	{ "write", OperationsPriority::HIGH },
+	};
+
+	if (priorities.contains(oper1) && priorities.contains(oper2)) {
+		if (priorities[oper1] > priorities[oper2]) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		throw std::invalid_argument("Interpreter::is_operation_higher_priority(): no such operator/operators");
+	}	
+}
+
 void Interpreter::construct_notation_output() {
 	std::stack<RpnElement> stack;
 	auto token = this->_la->get_next_token();
@@ -545,7 +571,6 @@ void Interpreter::execute_string_operation(const std::string & op, std::stack<Rp
 
 	if (op == "=") {
 		auto op2 = stack.top().name();
-		RpnElement::Type op2_type;
 		stack.pop();
 		assign(this->_str_values.at(op2), this->_str_values.at(op1));
 	}
@@ -605,7 +630,7 @@ void Interpreter::execute_logic_operation(const std::string & op, std::stack<Rpn
 		auto op2 = stack.top().name();
 		stack.pop();
 		bool op1_val = (op1 == "true") ? true : false;
-		auto result = equal(this->_int_values.at(op2), op1_val);
+		auto result = equal(this->_bool_values.at(op2), op1_val);
 		std::string name = (result) ? "true" : "false";
 		stack.push(RpnElement(RpnElement::Type::OPERAND_CONSTANT, name));
 	}
@@ -613,7 +638,7 @@ void Interpreter::execute_logic_operation(const std::string & op, std::stack<Rpn
 		auto op2 = stack.top().name();
 		stack.pop();
 		bool op1_val = (op1 == "true") ? true : false;
-		auto result = more(this->_int_values.at(op2), op1_val);
+		auto result = more(this->_bool_values.at(op2), op1_val);
 		std::string name = (result) ? "true" : "false";
 		stack.push(RpnElement(RpnElement::Type::OPERAND_CONSTANT, name));
 	}
@@ -621,7 +646,7 @@ void Interpreter::execute_logic_operation(const std::string & op, std::stack<Rpn
 		auto op2 = stack.top().name();
 		stack.pop();
 		bool op1_val = (op1 == "true") ? true : false;
-		auto result = less(this->_int_values.at(op2), op1_val);
+		auto result = less(this->_bool_values.at(op2), op1_val);
 		std::string name = (result) ? "true" : "false";
 		stack.push(RpnElement(RpnElement::Type::OPERAND_CONSTANT, name));
 	}

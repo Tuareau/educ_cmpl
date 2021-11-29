@@ -1,5 +1,9 @@
 #pragma once
 
+#include <stack>
+#include <vector>
+
+#include "interpreter.h"
 #include "lexical_analyzer.h"
 #include "token.h"
 
@@ -27,34 +31,26 @@ private:
 	Result ARYTHM_EXPR() const;
 	Result LANG_OPERATOR() const;
 
-	Result FUNC_DEF() const;
-	Result FUNC_DECL() const;
-	Result FUNC_PARAM() const;
-	Result FUNC_BODY() const;
-	Result FUNC_CONSTRUCT() const;
-	Result RETURN_OP() const;
-	Result RETURN_EXPR() const;
-	Result FUNC_CALL() const;
 	Result ARG() const;
-
+	Result OPERAND() const;
 
 	Result ARYTHM_OPERATION() const;
-	Result OPERAND() const;
-	Result CONST_EXPR() const;
 
 	Result LOGICAL_EXPR() const;
-	//Result LOGICAL_OPERATION() const;
-	//Result LOGICAL_OP() const;
-	//Result LOGICAL_STATEMENT() const;
+	Result LOGICAL_OPERATION() const;
+	Result LOGICAL_STATEMENT() const;
 
-	//Result LANG_OPERATOR() const;
-	//Result WRITE_OP() const;
-	//Result WHILE_OP() const;
-	//Result IF_OP() const;
-	//Result OPERATION() const;
+	Result WRITE_OP() const;
+	Result WHILE_OP() const;
+	Result IF_OP() const;
+	Result OPERATION() const;
 
 	void print_error(const std::string & expected, const Token & token) const;
 	void print_warning(const std::string & warning) const;
+
+	Result check_token(const std::string & lexeme, const Token & token) const;
+
+	bool balaced_mathematic_expression(const std::vector<Token> & expression) const;
 
 public:
 	SyntaxAnalyzer() = delete;

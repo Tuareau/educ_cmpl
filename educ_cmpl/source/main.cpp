@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include "lexical_analyzer.h"
@@ -13,15 +14,16 @@ int main(int argc, char * argv[]) {
 
 	std::string filename = argv[1];
 
+	std::ofstream fout("tokens.txt", std::ios_base::trunc);
+
 	LexicalAnalyzer la(filename);
 	la.construct_token_table();
-	la.print_token_table(std::cout);
+	la.print_token_table(fout);
 
-	//SyntaxAnalyzer sa(&la);
-	//auto is_correct = sa.analyze_syntax();
+	SyntaxAnalyzer sa(&la);
+	auto is_correct = sa.analyze_syntax();
 
-	//if (is_correct) {
-
+	if (is_correct) {
 		la.construct_ident_table();
 		la.print_ident_table(std::cout);
 		la.construct_constant_table();
@@ -33,7 +35,7 @@ int main(int argc, char * argv[]) {
 		ipr.initialize_memory();
 		ipr.print_memory(std::cout);
 		ipr.execute_notation();
-	//}
+	}
 
 	return 0;
 }
