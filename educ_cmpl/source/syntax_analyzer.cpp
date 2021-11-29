@@ -4,43 +4,39 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-syntax_analyzer::~syntax_analyzer() {}
+SyntaxAnalyzer::SyntaxAnalyzer(LexicalAnalyzer* la) { _la = la; }
 
-syntax_analyzer::syntax_analyzer(LexicalAnalyzer* la) { LexA = la; }
-
-bool syntax_analyzer::synt_analyz()
+bool SyntaxAnalyzer::analyze_syntax()
 {
 	int i = 0;
 	
 }
 
-Token syntax_analyzer::get_token() { return (LexA->get_next_token()); }
-
-void syntax_analyzer::unget_token() { LexA->unget_token(); }
-
-syntax_analyzer::Result syntax_analyzer::S()
+SyntaxAnalyzer::Result SyntaxAnalyzer::START() const
 {
 	auto result = Result::SUCCESS;
-	auto token = get_token();
-	if (token.valid() == false) {
-		return Result::NOT_FOUND;
-	}
+	auto token = this->_la->get_next_token();
 	if (token.value() != "PROGRAMM") {
 		cout << "ERROR! Expected 'PROGRAMM'." << endl;
 		return Result::ERROR;
 	}
-	token = get_token();
+	token = this->_la->get_next_token();
 	if (token.value() != ";") {
 		cout << "ERROR! Expected ';'." << endl;
 		return Result::ERROR;
 	}
-	PROGRAM_BODY();
-	token = get_token();
+	if ((this->PROGRAM_BODY()) == Result::ERROR) {
+		cout << "ERROR in PROGRAM BODY! " << endl;
+	}
+	if ((this->PROGRAM_BODY()) == Result::NOT_FOUND) {
+		cout << "The corresponding token was not found." << endl;	  // не найдена соответствующая лексема
+	}
+	token = this->_la->get_next_token();
 	if (token.value() != "END") {
 		cout << "ERROR! Expected 'END'." << endl;
 		return Result::ERROR;
 	}
-	token = get_token();
+	token = this->_la->get_next_token();
 	if (token.value() != ".") {
 		cout << "ERROR! Expected '.'." << endl;
 		return Result::ERROR;
@@ -48,7 +44,7 @@ syntax_analyzer::Result syntax_analyzer::S()
 	return Result::SUCCESS;
 }
 
-syntax_analyzer::Result syntax_analyzer::PROGRAM_BODY()
+SyntaxAnalyzer::Result SyntaxAnalyzer::PROGRAM_BODY() const
 {
 	auto found = Statement::UNRECOGNIZED;
 	auto result = Result::SUCCESS;
@@ -59,51 +55,58 @@ syntax_analyzer::Result syntax_analyzer::PROGRAM_BODY()
 		else if (result == Result::SUCCESS)
 			found = Statement::RECOGNIZED;
 	}
-	if (found == Statement::RECOGNIZED)
+	if (found == Statement::RECOGNIZED) {
 		result = Result::SUCCESS;
+	}
 	return result;
 }
 
-syntax_analyzer::Result syntax_analyzer::LANG_CONSTRUCT()
+SyntaxAnalyzer::Result SyntaxAnalyzer::LANG_CONSTRUCT() const
 {
 	auto result = VAR_DECL();
-	if (result != Result::NOT_FOUND)
+	if (result != Result::NOT_FOUND) {
 		return result;
+	}
 
 	result = ARYTHM_EXPR();
 	if (result != Result::NOT_FOUND) {
 		if (result == Result::SUCCESS) {
-			auto token = get_token();
+			auto token = this->_la->get_next_token();
 			if (token.value() != ";") {
 				cout << "Expected ';'." << endl;
 				return Result::ERROR;
 			}
-			else
+			else {
 				return Result::SUCCESS;
-		} else {
+			}
+		} 
+		else {
 			return Result::ERROR;
 		}
 	}
 
 	result = LANG_OPERATOR();
-	if (result != Result::NOT_FOUND)
+	if (result != Result::NOT_FOUND) {
 		return result;
+	}
 	return Result::ERROR;
 }
 
-syntax_analyzer::Result syntax_analyzer::VAR_DECL()
+SyntaxAnalyzer::Result SyntaxAnalyzer::VAR_DECL() const
 {
-	if (TYPE() == Result::ERROR)
+	if (TYPE() == Result::ERROR) {
 		return Result::ERROR;
-	else if (TYPE() == Result::NOT_FOUND)
+	}
+	else if (TYPE() == Result::NOT_FOUND) {
 		return Result::NOT_FOUND;
-	if (IDENT() == Result::ERROR)
+	}
+	if (IDENT() == Result::ERROR) {
 		return Result::ERROR;
-	else if (IDENT() == Result::NOT_FOUND)
+	}
+	else if (IDENT() == Result::NOT_FOUND) {
 		return Result::NOT_FOUND;
-	auto token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
+	}
+	auto token = this->_la->get_next_token();
 	if (token.value() != ";")
 	{
 		cout << "Expected ';'" << endl;
@@ -112,10 +115,10 @@ syntax_analyzer::Result syntax_analyzer::VAR_DECL()
 	return Result::SUCCESS;
 }
 
-syntax_analyzer::Result syntax_analyzer::TYPE()
+SyntaxAnalyzer::Result SyntaxAnalyzer::TYPE() const
 {
-	auto token = get_token();
-	if (token.valid() == false)
+	auto token = this->_la->get_next_token();
+	if (token.type() == Token::Type::IDENT)
 		return Result::NOT_FOUND;
 	if (token.value() != "integer" || token.value() != "string" || token.value() != "bool")
 	{
@@ -125,11 +128,9 @@ syntax_analyzer::Result syntax_analyzer::TYPE()
 	return Result::SUCCESS;
 }
 
-syntax_analyzer::Result syntax_analyzer::IDENT()
+SyntaxAnalyzer::Result SyntaxAnalyzer::IDENT() const
 {
-	auto token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
+	auto token = this->_la->get_next_token();
 	if (token.type() != Token::Type::IDENT)
 	{
 		cout << "Expecter identifier." << endl;
@@ -138,57 +139,55 @@ syntax_analyzer::Result syntax_analyzer::IDENT()
 	return Result::SUCCESS;
 }
 
-syntax_analyzer::Result syntax_analyzer::ARG()
+SyntaxAnalyzer::Result SyntaxAnalyzer::ARG() const
 {
-	auto token = get_token();
-
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.type() == Token::Type::CONSTANT)
+	auto token = this->_la->get_next_token();
+	if (token.type() == Token::Type::CONSTANT) {
 		return Result::SUCCESS;
-	if (token.type() == Token::Type::IDENT)
+	}
+	if (token.type() == Token::Type::IDENT) {
 		return Result::SUCCESS;
+	}
 	return Result::ERROR;
 }
 
-syntax_analyzer::Result syntax_analyzer::ARYTHM_EXPR()
+SyntaxAnalyzer::Result SyntaxAnalyzer::ARYTHM_EXPR() const
 {
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::ARYTHM_OP()
+SyntaxAnalyzer::Result SyntaxAnalyzer::ARYTHM_OP() const
 {
-	auto token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.value() != "+" || token.value() != "-" || token.value() != "*" || token.value() != "/")
+	auto token = this->_la->get_next_token();
+	if (token.value() != "+" || token.value() != "-" || token.value() != "*" || token.value() != "/") {
 		return Result::ERROR;
+	}
 	return Result::SUCCESS;
 }
 
-syntax_analyzer::Result syntax_analyzer::ARYTHM_OPERATION()
+SyntaxAnalyzer::Result SyntaxAnalyzer::ARYTHM_OPERATION() const
 {
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::OPERAND()
+SyntaxAnalyzer::Result SyntaxAnalyzer::OPERAND() const
 {
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::LOGICAL_EXPR()
+SyntaxAnalyzer::Result SyntaxAnalyzer::LOGICAL_EXPR() const
 {
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::LOGICAL_OPERATION()
+SyntaxAnalyzer::Result SyntaxAnalyzer::LOGICAL_OPERATION() const
 {
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::LOGICAL_OP()
+SyntaxAnalyzer::Result SyntaxAnalyzer::LOGICAL_OP() const
 {
-	auto token = get_token();
+	auto token = this->_la->get_next_token();
 	if (token.value() == ">" || token.value() == "<" || token.value() == "==")
 	{
 		cout << "Expected logical operator." << endl;
@@ -197,115 +196,112 @@ syntax_analyzer::Result syntax_analyzer::LOGICAL_OP()
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::LOGICAL_STATEMENT()
+SyntaxAnalyzer::Result SyntaxAnalyzer::LOGICAL_STATEMENT() const
 {
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::LANG_OPERATOR()
+SyntaxAnalyzer::Result SyntaxAnalyzer::LANG_OPERATOR() const
 {
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::WRITE_OP()
+SyntaxAnalyzer::Result SyntaxAnalyzer::WRITE_OP() const
 {
 	Result result = Result::SUCCESS;
-	auto token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.value() != "write")
+	auto token = this->_la->get_next_token();
+	if (token.value() != "write") {
 		return Result::ERROR;
-	token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.value() != "(")
+	}
+	token = this->_la->get_next_token();
+	if (token.value() != "(") {
 		return Result::ERROR;
+	}
 	while (1)
 	{
-		token = get_token();
+		token = this->_la->get_next_token();
 		if (token.type() == Token::Type::IDENT || token.type() == Token::Type::CONSTANT)
 		{
-			unget_token();
+			this->_la->unget_token();
 			result = ARG();
-			if (result == Result::ERROR)
+			if (result == Result::ERROR) {
 				return Result::ERROR;
+			}
 		}
-		else if (token.value() == ",")
+		else if (token.value() == ",") {
 			continue;
+		}
 		else if (token.value() == ")")
 		{
-			unget_token();
+			this->_la->unget_token();
 			break;
 		}
 	}
-	token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.value() != ")")
+	token = this->_la->get_next_token();
+	if (token.value() != ")") {
 		return Result::ERROR;
-	token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.value() != ";")
+	}
+	token = this->_la->get_next_token();
+	if (token.value() != ";") {
 		return Result::ERROR;
+	}
 	return Result::SUCCESS;
 }
 
-syntax_analyzer::Result syntax_analyzer::WHILE_OP()
+SyntaxAnalyzer::Result SyntaxAnalyzer::WHILE_OP() const
 {
 	Result result = Result::SUCCESS;
-	auto token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.value() != "WHILE")
+	auto token = this->_la->get_next_token();
+	if (token.value() != "WHILE") {
 		return Result::ERROR;
+	}
 	result = LOGICAL_EXPR();
-	if (result == Result::NOT_FOUND || result == Result::ERROR)
+	if (result == Result::NOT_FOUND || result == Result::ERROR) {
 		return Result::ERROR;
-	if (token.value() != "DO")
+	}
+	if (token.value() != "DO") {
 		return Result::ERROR;
+	}
 	while (1)
 	{
-		if ((token = get_token()).value() == "ENDWHILE")
+		if ((token = this->_la->get_next_token()).value() == "ENDWHILE")
 		{
-			unget_token();
+			this->_la->unget_token();
 			break;
 		}
-		if ((result = OPERATION()) == Result::ERROR)
+		if ((result = OPERATION()) == Result::ERROR) {
 			return Result::ERROR;
+		}
 	}
-	token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.value() != "ENDWHILE")
+	token = this->_la->get_next_token();
+	if (token.value() != "ENDWHILE") {
 		return Result::ERROR;
-	token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.value() != ";")
+	}
+	token = this->_la->get_next_token();
+	if (token.value() != ";") {
 		return Result::ERROR;
+	}
 	return Result::SUCCESS;
 }
 
-syntax_analyzer::Result syntax_analyzer::IF_OP()
+SyntaxAnalyzer::Result SyntaxAnalyzer::IF_OP() const
 {
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::OPERATION()
+SyntaxAnalyzer::Result SyntaxAnalyzer::OPERATION() const
 {
 	return Result();
 }
 
-syntax_analyzer::Result syntax_analyzer::ENDL_OP()
+SyntaxAnalyzer::Result SyntaxAnalyzer::ENDL_OP() const
 {
-	auto token = get_token();
-	if (token.valid() == false)
-		return Result::NOT_FOUND;
-	if (token.value() != "endl")
+	auto token = this->_la->get_next_token();
+	if (token.value() != "endl") {
 		return Result::ERROR;
-	token = get_token();
-	if (token.valid() == false)
+	}
+	token = this->_la->get_next_token();
+	if (token.value() != ";")
 	{
 		cout << "Expected ';'" << endl;
 		return Result::ERROR;
