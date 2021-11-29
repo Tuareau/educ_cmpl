@@ -85,19 +85,22 @@ void LexicalAnalyzer::construct_token_table() {
 					if (symbol == '/') { // comment check
 						auto next = fin.get();
 						if (next == '*') {
+							fin.unget();
 							this->_state = State::COMMENT;
+							break;
 						}
-						fin.unget();
+						else {
+							fin.unget();
+						}
 					}
-					else {
-						token_type = Token::Type::OPERATION_SIGN;
-						token_value = std::string((std::stringstream() << static_cast<char>(symbol)).str());
 
-						this->_token_table[index++] = Token(token_type, token_line, token_value);
+					token_type = Token::Type::OPERATION_SIGN;
+					token_value = std::string((std::stringstream() << static_cast<char>(symbol)).str());
 
-						symbol = fin.get();
-						this->_state = State::START;
-					}
+					this->_token_table[index++] = Token(token_type, token_line, token_value);
+
+					symbol = fin.get();
+					this->_state = State::START;
 				}
 				else {
 					err_symbol = symbol;
