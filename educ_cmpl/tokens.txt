@@ -4,104 +4,212 @@
    LINE          TOKEN TYPE         TOKEN VALUE
       1             KEYWORD            PROGRAMM
       1           DELIMITER                   ;
-      4             KEYWORD             integer
-      4               IDENT                   n
+      3             KEYWORD             integer
+      3               IDENT                   N
+      3           DELIMITER                   ;
+      4               IDENT                   N
+      4      OPERATION_SIGN                   =
+      4            CONSTANT                  20
       4           DELIMITER                   ;
-      5             KEYWORD             integer
-      5               IDENT                   i
-      5           DELIMITER                   ;
       6             KEYWORD             integer
-      6               IDENT                 res
+      6               IDENT               start
       6           DELIMITER                   ;
-      8               IDENT                   n
+      7             KEYWORD             integer
+      7               IDENT                step
+      7           DELIMITER                   ;
+      8               IDENT               start
       8      OPERATION_SIGN                   =
-      8            CONSTANT                  10
+      8            CONSTANT                   1
       8           DELIMITER                   ;
-      9               IDENT                 res
+      9               IDENT                step
       9      OPERATION_SIGN                   =
-      9            CONSTANT                   1
+      9            CONSTANT                   2
       9           DELIMITER                   ;
-     11               IDENT                   i
-     11      OPERATION_SIGN                   =
-     11            CONSTANT                   1
+     11             KEYWORD                endl
      11           DELIMITER                   ;
-     12             KEYWORD               WHILE
-     12               IDENT                   i
-     12      OPERATION_SIGN                   <
-     12               IDENT                   n
-     13             KEYWORD                  DO
-     14               IDENT                 res
-     14      OPERATION_SIGN                   =
-     14               IDENT                 res
-     14      OPERATION_SIGN                   *
-     14               IDENT                   i
+     12             KEYWORD               write
+     12           DELIMITER                   (
+     12            CONSTANT          "start = "
+     12           DELIMITER                   )
+     12           DELIMITER                   ;
+     13             KEYWORD               write
+     13           DELIMITER                   (
+     13               IDENT               start
+     13           DELIMITER                   )
+     13           DELIMITER                   ;
+     14             KEYWORD                endl
      14           DELIMITER                   ;
-     15               IDENT                   i
-     15      OPERATION_SIGN                   =
-     15               IDENT                   i
-     15      OPERATION_SIGN                   +
-     15            CONSTANT                   1
+     15             KEYWORD               write
+     15           DELIMITER                   (
+     15            CONSTANT           "step = "
+     15           DELIMITER                   )
      15           DELIMITER                   ;
-     16             KEYWORD                  if
-     16               IDENT                   i
-     16      OPERATION_SIGN                  ==
-     16               IDENT                   n
-     17               IDENT                 res
-     17      OPERATION_SIGN                   =
-     17               IDENT                 res
-     17      OPERATION_SIGN                   *
-     17               IDENT                   i
+     16             KEYWORD               write
+     16           DELIMITER                   (
+     16               IDENT                step
+     16           DELIMITER                   )
+     16           DELIMITER                   ;
+     17             KEYWORD                endl
      17           DELIMITER                   ;
-     18             KEYWORD           EXITWHILE
+     18             KEYWORD               write
+     18           DELIMITER                   (
+     18            CONSTANT"number of elements = "
+     18           DELIMITER                   )
      18           DELIMITER                   ;
-     19             KEYWORD               endif
+     19             KEYWORD               write
+     19           DELIMITER                   (
+     19               IDENT                   N
+     19           DELIMITER                   )
      19           DELIMITER                   ;
-     20             KEYWORD            ENDWHILE
+     20             KEYWORD                endl
      20           DELIMITER                   ;
-     22             KEYWORD              string
-     22               IDENT                  m1
+     22             KEYWORD             integer
+     22               IDENT                  Sa
      22           DELIMITER                   ;
-     23             KEYWORD              string
-     23               IDENT                  m2
+     23             KEYWORD             integer
+     23               IDENT                  Sb
      23           DELIMITER                   ;
-     24               IDENT                  m1
+     24               IDENT                  Sa
      24      OPERATION_SIGN                   =
-     24            CONSTANT        "factorial("
+     24            CONSTANT                   0
      24           DELIMITER                   ;
-     25               IDENT                  m2
+     25               IDENT                  Sb
      25      OPERATION_SIGN                   =
-     25            CONSTANT              ") = "
+     25            CONSTANT                   0
      25           DELIMITER                   ;
-     27             KEYWORD                endl
+     27             KEYWORD             integer
+     27               IDENT                   a
      27           DELIMITER                   ;
-     28             KEYWORD               write
-     28           DELIMITER                   (
-     28               IDENT                  m1
-     28           DELIMITER                   )
+     28             KEYWORD             integer
+     28               IDENT                   i
      28           DELIMITER                   ;
-     29             KEYWORD               write
-     29           DELIMITER                   (
-     29               IDENT                   n
-     29           DELIMITER                   )
+     29               IDENT                   a
+     29      OPERATION_SIGN                   =
+     29               IDENT               start
      29           DELIMITER                   ;
-     30             KEYWORD               write
-     30           DELIMITER                   (
-     30               IDENT                  m2
-     30           DELIMITER                   )
-     30           DELIMITER                   ;
-     31             KEYWORD               write
-     31           DELIMITER                   (
-     31               IDENT                 res
-     31           DELIMITER                   )
+     31               IDENT                   i
+     31      OPERATION_SIGN                   =
+     31            CONSTANT                   0
      31           DELIMITER                   ;
-     32             KEYWORD                endl
-     32           DELIMITER                   ;
-     33             KEYWORD               write
-     33           DELIMITER                   (
-     33            CONSTANT              "DONE"
-     33           DELIMITER                   )
-     33           DELIMITER                   ;
-     34             KEYWORD                endl
-     34           DELIMITER                   ;
-     36             KEYWORD                 END
-     36           DELIMITER                   .
+     33             KEYWORD               WHILE
+     33               IDENT                   i
+     33      OPERATION_SIGN                   <
+     33               IDENT                   N
+     34             KEYWORD                  DO
+     35               IDENT                   i
+     35      OPERATION_SIGN                   =
+     35               IDENT                   i
+     35      OPERATION_SIGN                   +
+     35            CONSTANT                   1
+     35           DELIMITER                   ;
+     36               IDENT                   a
+     36      OPERATION_SIGN                   =
+     36               IDENT               start
+     36      OPERATION_SIGN                   +
+     36               IDENT                step
+     36      OPERATION_SIGN                   *
+     36           DELIMITER                   (
+     36               IDENT                   i
+     36      OPERATION_SIGN                   -
+     36            CONSTANT                   1
+     36           DELIMITER                   )
+     36           DELIMITER                   ;
+     37               IDENT                  Sa
+     37      OPERATION_SIGN                   =
+     37               IDENT                  Sa
+     37      OPERATION_SIGN                   +
+     37               IDENT                   a
+     37           DELIMITER                   ;
+     38             KEYWORD            ENDWHILE
+     38           DELIMITER                   ;
+     40             KEYWORD               write
+     40           DELIMITER                   (
+     40            CONSTANT"sum of arythm progression = "
+     40           DELIMITER                   )
+     40           DELIMITER                   ;
+     41             KEYWORD               write
+     41           DELIMITER                   (
+     41               IDENT                  Sa
+     41           DELIMITER                   )
+     41           DELIMITER                   ;
+     42             KEYWORD                endl
+     42           DELIMITER                   ;
+     44             KEYWORD             integer
+     44               IDENT                   i
+     44           DELIMITER                   ;
+     47             KEYWORD             integer
+     47               IDENT                   b
+     47           DELIMITER                   ;
+     48             KEYWORD             integer
+     48               IDENT              b_prev
+     48           DELIMITER                   ;
+     50               IDENT                   i
+     50      OPERATION_SIGN                   =
+     50            CONSTANT                   0
+     50           DELIMITER                   ;
+     51               IDENT              b_prev
+     51      OPERATION_SIGN                   =
+     51               IDENT               start
+     51           DELIMITER                   ;
+     52               IDENT                   b
+     52      OPERATION_SIGN                   =
+     52               IDENT               start
+     52           DELIMITER                   ;
+     53             KEYWORD               WHILE
+     53               IDENT                   i
+     53      OPERATION_SIGN                   <
+     53               IDENT                   N
+     54             KEYWORD                  DO
+     55               IDENT                   i
+     55      OPERATION_SIGN                   =
+     55               IDENT                   i
+     55      OPERATION_SIGN                   +
+     55            CONSTANT                   1
+     55           DELIMITER                   ;
+     56             KEYWORD                  if
+     56               IDENT                   i
+     56      OPERATION_SIGN                  ==
+     56               IDENT                   N
+     56             KEYWORD                then
+     57             KEYWORD           EXITWHILE
+     57           DELIMITER                   ;
+     58             KEYWORD                else
+     58             KEYWORD               write
+     58           DELIMITER                   (
+     58            CONSTANT                  ""
+     58           DELIMITER                   )
+     58           DELIMITER                   ;
+     59             KEYWORD               endif
+     59           DELIMITER                   ;
+     60               IDENT                   b
+     60      OPERATION_SIGN                   =
+     60               IDENT              b_prev
+     60      OPERATION_SIGN                   *
+     60               IDENT                step
+     60           DELIMITER                   ;
+     61               IDENT              b_prev
+     61      OPERATION_SIGN                   =
+     61               IDENT                   b
+     61           DELIMITER                   ;
+     62               IDENT                  Sb
+     62      OPERATION_SIGN                   =
+     62               IDENT                  Sb
+     62      OPERATION_SIGN                   +
+     62               IDENT                   b
+     62           DELIMITER                   ;
+     63             KEYWORD            ENDWHILE
+     63           DELIMITER                   ;
+     65             KEYWORD               write
+     65           DELIMITER                   (
+     65            CONSTANT"sum of geom progression = "
+     65           DELIMITER                   )
+     65           DELIMITER                   ;
+     66             KEYWORD               write
+     66           DELIMITER                   (
+     66               IDENT                  Sb
+     66           DELIMITER                   )
+     66           DELIMITER                   ;
+     67             KEYWORD                endl
+     67           DELIMITER                   ;
+     69             KEYWORD                 END
+     69           DELIMITER                   .

@@ -302,7 +302,8 @@ Token LexicalAnalyzer::get_token(size_t key) const {
 	return Token();
 }
 
-void LexicalAnalyzer::construct_ident_table() {
+bool LexicalAnalyzer::construct_ident_table() {
+	bool no_repeated_declarations = true;
 	std::string scope;
 	for (const auto & token_iter : this->_token_table) {	
 		const auto & [pos, token] = token_iter; // current token and its position
@@ -314,8 +315,11 @@ void LexicalAnalyzer::construct_ident_table() {
 			if (next_token.valid()) {
 				const auto ident_name = scope + next_token.value();
 				if (this->_ident_table.contains(ident_name)) { // declaration repeated
-					std::cout << "\n\tREUSE ident: '" << ident_name
-						<< "' type: " << token.value() << std::endl;
+					no_repeated_declarations = false;
+					std::cout << ">>> ERROR:\n";
+					std::cout << ">>> repeated declaraton: '" << ident_name << "'";
+					std::cout << "\n>>> line " << token.line() << ": ";
+					std::cout << this->get_file_line(token.line()) << std::endl;
 				}
 				else { // right declaration, new ident with scope
 					this->_ident_table[ident_name] = Ident(Ident::str_to_type(token.value()), ident_name);
@@ -327,6 +331,7 @@ void LexicalAnalyzer::construct_ident_table() {
 			scope += func_name + "::";
 		}
 	}
+	return no_repeated_declarations;
 }
 
 bool LexicalAnalyzer::is_decl_keyword(const std::string & str) const {

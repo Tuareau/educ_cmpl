@@ -61,7 +61,7 @@ public:
 	LexicalAnalyzer(const std::string & filename);
 
 	void construct_token_table();
-	void construct_ident_table();
+	bool construct_ident_table();
 	void construct_constant_table();
 
 	void print_token_table(std::ostream & os) const;

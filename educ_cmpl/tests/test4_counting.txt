@@ -1,0 +1,69 @@
+PROGRAMM;
+
+	integer N;
+	N = 20;
+
+	integer start;
+	integer step;
+	start = 1;
+	step = 2;
+
+	endl;
+	write("start = ");
+	write(start);
+	endl;
+	write("step = ");
+	write(step);
+	endl;
+	write("number of elements = ");
+	write(N);
+	endl;
+
+	integer Sa;
+	integer Sb;
+	Sa = 0;
+	Sb = 0;
+
+	integer a;
+	integer i;
+	a = start;
+
+	i = 0;
+	/* arythmetic progression */
+	WHILE i < N
+		DO
+		i = i + 1;
+		a = start + step * (i - 1);
+		Sa = Sa + a;
+	ENDWHILE;
+
+	write("sum of arythm progression = ");
+	write(Sa);
+	endl;
+
+	integer i;
+
+	/* geometric progression */
+	integer b;
+	integer b_prev;
+
+	i = 0;
+	b_prev = start;
+	b = start;
+	WHILE i < N
+		DO
+		i = i + 1;
+		if i == N then
+			EXITWHILE;
+		else write("");
+		endif;
+		b = b_prev * step;
+		b_prev = b;
+		Sb = Sb + b;
+	ENDWHILE;
+
+	write("sum of geom progression = ");
+	write(Sb);
+	endl;
+
+END.

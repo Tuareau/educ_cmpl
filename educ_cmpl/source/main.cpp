@@ -37,19 +37,24 @@ int main(int argc, char * argv[]) {
 	auto is_correct = sa.analyze_syntax();
 
 	if (is_correct) {
-		la.construct_ident_table();
-		la.print_ident_table(fout_idents);
-		la.construct_constant_table();
-		la.print_constant_table(fout_constants);
+		auto no_repeated_declarations = la.construct_ident_table();
+		if (no_repeated_declarations) {
+			la.print_ident_table(fout_idents);
+			la.construct_constant_table();
+			la.print_constant_table(fout_constants);
 
-		Interpreter ipr(&la);
-		ipr.construct_notation_output();
-		ipr.print_notation(fout_rpn);
-		ipr.initialize_memory();
-		ipr.print_memory(fout_init_memory);
-		ipr.execute_notation();
+			Interpreter ipr(&la);
+			ipr.construct_notation_output();
+			ipr.print_notation(fout_rpn);
+			ipr.initialize_memory();
+			ipr.print_memory(fout_init_memory);
+			ipr.execute_notation();
 
-		std::cout << "\n\n>>> successfuly executed\n";
+			std::cout << "\n\n>>> successfuly executed\n";
+		}
+		else {
+			std::cout << "\n>>> could not start interpretation due to repeated declarations\n";
+		}
 	}
 	else {
 		std::cout << "\n>>> could not start interpretation due to errors\n";
