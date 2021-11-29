@@ -60,7 +60,7 @@ private:
 public:
 	LexicalAnalyzer(const std::string & filename);
 
-	void construct_token_table();
+	bool construct_token_table();
 	bool construct_ident_table();
 	void construct_constant_table();
 

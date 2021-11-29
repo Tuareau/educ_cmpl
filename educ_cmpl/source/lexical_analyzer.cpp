@@ -14,7 +14,7 @@ std::string LexicalAnalyzer::get_file_line(size_t line) const {
 	return result;
 }
 
-void LexicalAnalyzer::construct_token_table() {
+bool LexicalAnalyzer::construct_token_table() {
 
 	std::fstream fin;
 	fin.open(this->_filename, std::ios_base::in);
@@ -29,6 +29,8 @@ void LexicalAnalyzer::construct_token_table() {
 	Token::Type token_type;
 	std::string token_value;
 	size_t token_line = 1;
+
+	bool no_wrong_symbol = true;
 
 	symbol = fin.get();
 	while (fin.good() && !fin.eof()) {
@@ -157,8 +159,12 @@ void LexicalAnalyzer::construct_token_table() {
 
 			case State::ERROR:
 			{
-				std::cout << "\nUnknown character\n" << static_cast<char>(err_symbol);
+				std::cout << "\n>>> ERROR:";
+				std::cout << "\n>>> unknown character: '" << static_cast<char>(err_symbol) << "'";
+				std::cout << "\n>>> line " << token_line << ": ";
+				std::cout << this->get_file_line(token_line) << std::endl;
 				this->_state = State::START;
+				no_wrong_symbol = false;
 				break;
 			}
 
@@ -214,6 +220,7 @@ void LexicalAnalyzer::construct_token_table() {
 		}
 	} 
 	fin.close();
+	return no_wrong_symbol;
 }
 
 void LexicalAnalyzer::print_token_table(std::ostream & os) const {

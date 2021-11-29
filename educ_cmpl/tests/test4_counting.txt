@@ -41,8 +41,6 @@ PROGRAMM;
 	write(Sa);
 	endl;
 
-	integer i;
-
 	/* geometric progression */
 	integer b;
 	integer b_prev;

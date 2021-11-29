@@ -1,0 +1,13 @@
+
+         IDENT TABLE
+
+          IDENT TYPE               IDENT NAME
+             INTEGER                        N
+             INTEGER                       Sa
+             INTEGER                       Sb
+             INTEGER                        a
+             INTEGER                        b
+             INTEGER                   b_prev
+             INTEGER                        i
+             INTEGER                    start
+             INTEGER                     step

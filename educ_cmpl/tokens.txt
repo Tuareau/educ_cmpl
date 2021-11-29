@@ -134,82 +134,79 @@
      41           DELIMITER                   ;
      42             KEYWORD                endl
      42           DELIMITER                   ;
-     44             KEYWORD             integer
-     44               IDENT                   i
-     44           DELIMITER                   ;
-     47             KEYWORD             integer
-     47               IDENT                   b
-     47           DELIMITER                   ;
-     48             KEYWORD             integer
-     48               IDENT              b_prev
+     45             KEYWORD             integer
+     45               IDENT                   b
+     45           DELIMITER                   ;
+     46             KEYWORD             integer
+     46               IDENT              b_prev
+     46           DELIMITER                   ;
+     48               IDENT                   i
+     48      OPERATION_SIGN                   =
+     48            CONSTANT                   0
      48           DELIMITER                   ;
-     50               IDENT                   i
+     49               IDENT              b_prev
+     49      OPERATION_SIGN                   =
+     49               IDENT               start
+     49           DELIMITER                   ;
+     50               IDENT                   b
      50      OPERATION_SIGN                   =
-     50            CONSTANT                   0
+     50               IDENT               start
      50           DELIMITER                   ;
-     51               IDENT              b_prev
-     51      OPERATION_SIGN                   =
-     51               IDENT               start
-     51           DELIMITER                   ;
-     52               IDENT                   b
-     52      OPERATION_SIGN                   =
-     52               IDENT               start
-     52           DELIMITER                   ;
-     53             KEYWORD               WHILE
+     51             KEYWORD               WHILE
+     51               IDENT                   i
+     51      OPERATION_SIGN                   <
+     51               IDENT                   N
+     52             KEYWORD                  DO
      53               IDENT                   i
-     53      OPERATION_SIGN                   <
-     53               IDENT                   N
-     54             KEYWORD                  DO
-     55               IDENT                   i
-     55      OPERATION_SIGN                   =
-     55               IDENT                   i
-     55      OPERATION_SIGN                   +
-     55            CONSTANT                   1
+     53      OPERATION_SIGN                   =
+     53               IDENT                   i
+     53      OPERATION_SIGN                   +
+     53            CONSTANT                   1
+     53           DELIMITER                   ;
+     54             KEYWORD                  if
+     54               IDENT                   i
+     54      OPERATION_SIGN                  ==
+     54               IDENT                   N
+     54             KEYWORD                then
+     55             KEYWORD           EXITWHILE
      55           DELIMITER                   ;
-     56             KEYWORD                  if
-     56               IDENT                   i
-     56      OPERATION_SIGN                  ==
-     56               IDENT                   N
-     56             KEYWORD                then
-     57             KEYWORD           EXITWHILE
+     56             KEYWORD                else
+     56             KEYWORD               write
+     56           DELIMITER                   (
+     56            CONSTANT                  ""
+     56           DELIMITER                   )
+     56           DELIMITER                   ;
+     57             KEYWORD               endif
      57           DELIMITER                   ;
-     58             KEYWORD                else
-     58             KEYWORD               write
-     58           DELIMITER                   (
-     58            CONSTANT                  ""
-     58           DELIMITER                   )
+     58               IDENT                   b
+     58      OPERATION_SIGN                   =
+     58               IDENT              b_prev
+     58      OPERATION_SIGN                   *
+     58               IDENT                step
      58           DELIMITER                   ;
-     59             KEYWORD               endif
+     59               IDENT              b_prev
+     59      OPERATION_SIGN                   =
+     59               IDENT                   b
      59           DELIMITER                   ;
-     60               IDENT                   b
+     60               IDENT                  Sb
      60      OPERATION_SIGN                   =
-     60               IDENT              b_prev
-     60      OPERATION_SIGN                   *
-     60               IDENT                step
+     60               IDENT                  Sb
+     60      OPERATION_SIGN                   +
+     60               IDENT                   b
      60           DELIMITER                   ;
-     61               IDENT              b_prev
-     61      OPERATION_SIGN                   =
-     61               IDENT                   b
+     61             KEYWORD            ENDWHILE
      61           DELIMITER                   ;
-     62               IDENT                  Sb
-     62      OPERATION_SIGN                   =
-     62               IDENT                  Sb
-     62      OPERATION_SIGN                   +
-     62               IDENT                   b
-     62           DELIMITER                   ;
-     63             KEYWORD            ENDWHILE
+     63             KEYWORD               write
+     63           DELIMITER                   (
+     63            CONSTANT"sum of geom progression = "
+     63           DELIMITER                   )
      63           DELIMITER                   ;
-     65             KEYWORD               write
-     65           DELIMITER                   (
-     65            CONSTANT"sum of geom progression = "
-     65           DELIMITER                   )
+     64             KEYWORD               write
+     64           DELIMITER                   (
+     64               IDENT                  Sb
+     64           DELIMITER                   )
+     64           DELIMITER                   ;
+     65             KEYWORD                endl
      65           DELIMITER                   ;
-     66             KEYWORD               write
-     66           DELIMITER                   (
-     66               IDENT                  Sb
-     66           DELIMITER                   )
-     66           DELIMITER                   ;
-     67             KEYWORD                endl
-     67           DELIMITER                   ;
-     69             KEYWORD                 END
-     69           DELIMITER                   .
+     67             KEYWORD                 END
+     67           DELIMITER                   .

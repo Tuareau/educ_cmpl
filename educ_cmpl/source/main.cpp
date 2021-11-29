@@ -30,35 +30,39 @@ int main(int argc, char * argv[]) {
 	std::cout << "\n>>> build started...\n\n";
 
 	LexicalAnalyzer la(filename);
-	la.construct_token_table();
+	auto no_wrong_symbols = la.construct_token_table();
 	la.print_token_table(fout_tokens);
+
+	if (!no_wrong_symbols) {
+		std::cout << "\n>>> could not start interpretation due to unknow characters\n";
+		return 0;
+	}
 
 	SyntaxAnalyzer sa(&la);
 	auto is_correct = sa.analyze_syntax();
 
-	if (is_correct) {
-		auto no_repeated_declarations = la.construct_ident_table();
-		if (no_repeated_declarations) {
-			la.print_ident_table(fout_idents);
-			la.construct_constant_table();
-			la.print_constant_table(fout_constants);
-
-			Interpreter ipr(&la);
-			ipr.construct_notation_output();
-			ipr.print_notation(fout_rpn);
-			ipr.initialize_memory();
-			ipr.print_memory(fout_init_memory);
-			ipr.execute_notation();
-
-			std::cout << "\n\n>>> successfuly executed\n";
-		}
-		else {
-			std::cout << "\n>>> could not start interpretation due to repeated declarations\n";
-		}
-	}
-	else {
+	if (!is_correct) {
 		std::cout << "\n>>> could not start interpretation due to errors\n";
+		return 0;
 	}
 
+	auto no_repeated_declarations = la.construct_ident_table();
+	if (!no_repeated_declarations) {
+		std::cout << "\n>>> could not start interpretation due to repeated declarations\n";		
+		return 0;
+	}
+
+	la.print_ident_table(fout_idents);
+	la.construct_constant_table();
+	la.print_constant_table(fout_constants);
+
+	Interpreter ipr(&la);
+	ipr.construct_notation_output();
+	ipr.print_notation(fout_rpn);
+	ipr.initialize_memory();
+	ipr.print_memory(fout_init_memory);
+	ipr.execute_notation();
+
+	std::cout << "\n\n>>> successfuly executed\n";
 	return 0;
 }

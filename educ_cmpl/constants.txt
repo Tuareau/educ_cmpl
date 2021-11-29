@@ -1,0 +1,14 @@
+
+     CONSTANTS TABLE
+
+       CONSTANT TYPE           CONSTANT VALUE
+              STRING                       ""
+              STRING  "number of elements = "
+              STRING               "start = "
+              STRING                "step = "
+              STRING"sum of arythm progression = "
+              STRING"sum of geom progression = "
+             INTEGER                        0
+             INTEGER                        1
+             INTEGER                        2
+             INTEGER                       20
