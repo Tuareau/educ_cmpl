@@ -6,7 +6,7 @@ class SyntaxAnalyzer
 private:
 	LexicalAnalyzer* _la;
 	enum class Result {
-		SUCCESS, ERROR, NOT_FOUND, TOKENS_ENDED
+		SUCCESS, ERROR, NOT_FOUND
 	};
 	enum class Statement {
 		RECOGNIZED, UNRECOGNIZED
