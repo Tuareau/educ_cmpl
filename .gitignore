@@ -16,6 +16,8 @@
 # Mono auto generated files
 mono_crash.*
 
+educ_cmpl/*.txt
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
