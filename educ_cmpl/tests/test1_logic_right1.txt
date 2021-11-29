@@ -1,0 +1,11 @@
+PROGRAMM;
+
+	/* logic */
+	bool x;
+	x = true;
+
+	endl;
+	write("x = ");
+	write(x);
+	endl;
+END.

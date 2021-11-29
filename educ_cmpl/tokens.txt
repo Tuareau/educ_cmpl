@@ -5,90 +5,103 @@
       1             KEYWORD            PROGRAMM
       1           DELIMITER                   ;
       4             KEYWORD             integer
-      4               IDENT                   x
+      4               IDENT                   n
       4           DELIMITER                   ;
       5             KEYWORD             integer
-      5               IDENT                   h
+      5               IDENT                   i
       5           DELIMITER                   ;
-      6             KEYWORD                bool
-      6               IDENT                   y
+      6             KEYWORD             integer
+      6               IDENT                 res
       6           DELIMITER                   ;
-      7             KEYWORD              string
-      7               IDENT                   z
-      7           DELIMITER                   ;
-      8               IDENT                   x
+      8               IDENT                   n
       8      OPERATION_SIGN                   =
       8            CONSTANT                  10
-      8      OPERATION_SIGN                   -
-      8            CONSTANT                   2
-      8      OPERATION_SIGN                   *
-      8            CONSTANT                   3
-      8      OPERATION_SIGN                   +
-      8            CONSTANT                   1
       8           DELIMITER                   ;
-      9               IDENT                   h
+      9               IDENT                 res
       9      OPERATION_SIGN                   =
-      9            CONSTANT                   4
+      9            CONSTANT                   1
       9           DELIMITER                   ;
-     10               IDENT                   z
-     10      OPERATION_SIGN                   =
-     10            CONSTANT               "www"
-     10           DELIMITER                   ;
-     11             KEYWORD               WHILE
-     11             KEYWORD                true
-     12             KEYWORD                  DO
-     13               IDENT                   x
-     13      OPERATION_SIGN                   =
-     13               IDENT                   x
-     13      OPERATION_SIGN                   -
-     13            CONSTANT                   1
-     13           DELIMITER                   ;
-     14             KEYWORD                  if
-     14               IDENT                   x
-     14      OPERATION_SIGN                   <
-     14               IDENT                   h
-     14             KEYWORD                then
-     15               IDENT                   y
+     11               IDENT                   i
+     11      OPERATION_SIGN                   =
+     11            CONSTANT                   1
+     11           DELIMITER                   ;
+     12             KEYWORD               WHILE
+     12               IDENT                   i
+     12      OPERATION_SIGN                   <
+     12               IDENT                   n
+     13             KEYWORD                  DO
+     14               IDENT                 res
+     14      OPERATION_SIGN                   =
+     14               IDENT                 res
+     14      OPERATION_SIGN                   *
+     14               IDENT                   i
+     14           DELIMITER                   ;
+     15               IDENT                   i
      15      OPERATION_SIGN                   =
-     15           DELIMITER                   (
-     15               IDENT                   x
-     15      OPERATION_SIGN                   <
-     15            CONSTANT                   2
-     15           DELIMITER                   )
+     15               IDENT                   i
+     15      OPERATION_SIGN                   +
+     15            CONSTANT                   1
      15           DELIMITER                   ;
-     16             KEYWORD           EXITWHILE
-     16           DELIMITER                   ;
-     17             KEYWORD                else
-     17               IDENT                   y
+     16             KEYWORD                  if
+     16               IDENT                   i
+     16      OPERATION_SIGN                  ==
+     16               IDENT                   n
+     17               IDENT                 res
      17      OPERATION_SIGN                   =
-     17           DELIMITER                   (
-     17               IDENT                   x
-     17      OPERATION_SIGN                   >
-     17            CONSTANT                   2
-     17           DELIMITER                   )
+     17               IDENT                 res
+     17      OPERATION_SIGN                   *
+     17               IDENT                   i
      17           DELIMITER                   ;
-     18             KEYWORD               endif
+     18             KEYWORD           EXITWHILE
      18           DELIMITER                   ;
-     19             KEYWORD            ENDWHILE
+     19             KEYWORD               endif
      19           DELIMITER                   ;
-     21             KEYWORD              string
-     21               IDENT                   l
-     21           DELIMITER                   ;
-     22               IDENT                   l
-     22      OPERATION_SIGN                   =
-     22            CONSTANT              "y = "
+     20             KEYWORD            ENDWHILE
+     20           DELIMITER                   ;
+     22             KEYWORD              string
+     22               IDENT                  m1
      22           DELIMITER                   ;
-     23             KEYWORD               write
-     23           DELIMITER                   (
-     23               IDENT                   l
-     23           DELIMITER                   )
+     23             KEYWORD              string
+     23               IDENT                  m2
      23           DELIMITER                   ;
-     24             KEYWORD               write
-     24           DELIMITER                   (
-     24               IDENT                   y
-     24           DELIMITER                   )
+     24               IDENT                  m1
+     24      OPERATION_SIGN                   =
+     24            CONSTANT        "factorial("
      24           DELIMITER                   ;
-     25             KEYWORD                endl
+     25               IDENT                  m2
+     25      OPERATION_SIGN                   =
+     25            CONSTANT              ") = "
      25           DELIMITER                   ;
-     26             KEYWORD                 END
-     26           DELIMITER                   .
+     27             KEYWORD                endl
+     27           DELIMITER                   ;
+     28             KEYWORD               write
+     28           DELIMITER                   (
+     28               IDENT                  m1
+     28           DELIMITER                   )
+     28           DELIMITER                   ;
+     29             KEYWORD               write
+     29           DELIMITER                   (
+     29               IDENT                   n
+     29           DELIMITER                   )
+     29           DELIMITER                   ;
+     30             KEYWORD               write
+     30           DELIMITER                   (
+     30               IDENT                  m2
+     30           DELIMITER                   )
+     30           DELIMITER                   ;
+     31             KEYWORD               write
+     31           DELIMITER                   (
+     31               IDENT                 res
+     31           DELIMITER                   )
+     31           DELIMITER                   ;
+     32             KEYWORD                endl
+     32           DELIMITER                   ;
+     33             KEYWORD               write
+     33           DELIMITER                   (
+     33            CONSTANT              "DONE"
+     33           DELIMITER                   )
+     33           DELIMITER                   ;
+     34             KEYWORD                endl
+     34           DELIMITER                   ;
+     36             KEYWORD                 END
+     36           DELIMITER                   .

@@ -50,7 +50,7 @@ private:
 
 	Result check_token(const std::string & lexeme, const Token & token) const;
 
-	bool balaced_mathematic_expression(const std::vector<Token> & expression) const;
+	bool balanced_mathematic_expression(const std::vector<Token> & expression) const;
 
 public:
 	SyntaxAnalyzer() = delete;

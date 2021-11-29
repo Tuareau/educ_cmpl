@@ -1,0 +1,36 @@
+PROGRAMM;
+
+	/* factorial */
+	integer n;
+	integer i;
+	integer res;
+
+	n = 10;
+	res = 1;
+
+	i = 1;
+	WHILE i < n
+		DO
+			res = res * i;
+			i = i + 1;
+			if i == n /* then */
+				res = res * i;
+				EXITWHILE;
+			endif;
+	ENDWHILE;
+
+	string m1;
+	string m2;
+	m1 = "factorial(";
+	m2 = ") = ";
+
+	endl;
+	write(m1);
+	write(n);
+	write(m2);
+	write(res);
+	endl;
+	write("DONE");
+	endl;
+
+END.

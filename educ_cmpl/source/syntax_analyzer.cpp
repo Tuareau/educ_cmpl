@@ -4,17 +4,15 @@ SyntaxAnalyzer::SyntaxAnalyzer(LexicalAnalyzer* la)
 	: _la(la) {}
 
 void SyntaxAnalyzer::print_error(const std::string & expected, const Token & token) const {
-	auto title_indent = std::setw(12);
-	std::cout << "\n" << title_indent << "ERROR:\n";
-	std::cout << title_indent << "found '" << token.value() << "'" << std::endl;
-	std::cout << title_indent << "expected '" << expected << "'" << std::endl;
-	std::cout << "line " << token.line() << ": ";
+	std::cout << "\n>>> ERROR:\n";
+	//std::cout << ">>> found '" << token.value() << "'" << std::endl;
+	std::cout << ">>> expected '" << expected << "'" << std::endl;
+	std::cout << ">>> line " << token.line() << ": ";
 	std::cout << this->_la->get_file_line(token.line()) << std::endl;
 }
 
 void SyntaxAnalyzer::print_warning(const std::string & warning) const {
-	auto title_indent = std::setw(12);
-	std::cout << title_indent << "WARNING:";
+	std::cout  << "\n>>> WARNING: ";
 	std::cout << warning << std::endl;
 }
 
@@ -243,7 +241,7 @@ SyntaxAnalyzer::Result SyntaxAnalyzer::ARYTHM_OPERATION() const {
 	}
 
 	// check expression
-	if (this->balaced_mathematic_expression(expression)) {
+	if (this->balanced_mathematic_expression(expression)) {
 		this->_la->unget_token();
 		return Result::SUCCESS;
 	}
@@ -297,9 +295,9 @@ SyntaxAnalyzer::Result SyntaxAnalyzer::LOGICAL_OPERATION() const {
 		else if (token.type() == Token::Type::CONSTANT) {
 			expression.push_back(token);
 		}
-		else if (token.value() == "true" || token.value() == "false") {
-			expression.push_back(token);
-		}
+		//else if (token.value() == "true" || token.value() == "false") {
+		//	expression.push_back(token);
+		//}
 		else if (token.value() == ">" || token.value() == "==" || token.value() == "<") {
 			expression.push_back(token);
 		}
@@ -318,7 +316,7 @@ SyntaxAnalyzer::Result SyntaxAnalyzer::LOGICAL_OPERATION() const {
 	}
 
 	// check expression
-	if (this->balaced_mathematic_expression(expression)) {
+	if (this->balanced_mathematic_expression(expression)) {
 		this->_la->unget_token();
 		return Result::SUCCESS;
 	}
@@ -332,22 +330,21 @@ SyntaxAnalyzer::Result SyntaxAnalyzer::LOGICAL_OPERATION() const {
 	}
 }
 
-bool SyntaxAnalyzer::balaced_mathematic_expression(const std::vector<Token> & expression) const {
+bool SyntaxAnalyzer::balanced_mathematic_expression(const std::vector<Token> & expression) const {
 
 	// to reverse notation
 	std::stack<Token> stack;
 	std::vector<Token> output;
 	for (auto & token : expression) {
-
 		if (token.type() == Token::Type::IDENT) {
 			output.push_back(token);
 		}
 		else if (token.type() == Token::Type::CONSTANT) {
 			output.push_back(token);
 		}
-		else if (token.value() == "false" || token.value() == "true") {
-			output.push_back(token);
-		}
+		//else if (token.value() == "false" || token.value() == "true") {
+		//	output.push_back(token);
+		//}
 		else if (token.value() == "(") {
 			stack.push(token);
 		}

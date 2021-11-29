@@ -1,0 +1,11 @@
+PROGRAMM;
+
+	/* logic */
+	bool x;
+	x = (5 > 7);
+
+	endl;
+	write("x = ");
+	write(x);
+	endl;
+END.

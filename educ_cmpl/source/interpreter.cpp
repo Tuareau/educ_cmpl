@@ -398,7 +398,13 @@ void Interpreter::execute_notation() {
 			else {
 				auto element = stack.top().name();
 				if (this->_int_values.contains(element)) {
-					this->execute_integer_operation(iter->name(), stack);
+					try {
+						this->execute_integer_operation(iter->name(), stack);
+					}
+					catch (std::invalid_argument & ex) {
+						std::cout << "\n>>> exception: " << ex.what() << std::endl;
+						return;
+					}					
 				}
 				else if (this->_str_values.contains(element)) {
 					this->execute_string_operation(iter->name(), stack);
@@ -449,7 +455,7 @@ void Interpreter::execute_integer_operation(const std::string & op, std::stack<R
 	auto substract = [](const auto & lhs, const auto & rhs) { return lhs - rhs; };
 	auto divide = [](const auto & lhs, const auto & rhs) {
 		if (!rhs) {
-			throw std::invalid_argument("divide lambda: division by zero");
+			throw std::invalid_argument("division by zero");
 		}
 		return lhs / rhs;
 	};
