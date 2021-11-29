@@ -1,16 +1,26 @@
 #include "lexical_analyzer.h"
 
-LexicalAnalyzer::LexicalAnalyzer()
-	: _tokens_stream_pos(0) {}
+LexicalAnalyzer::LexicalAnalyzer(const std::string & filename)
+	: _tokens_stream_pos(0), _filename(filename) {}
 
-void LexicalAnalyzer::construct_token_table(const std::string & filename) {
+std::string LexicalAnalyzer::get_file_line(size_t line) const {
+	std::string result;
+	std::ifstream fin;
+	fin.open(this->_filename, std::ios_base::in);
+	while (fin.good() && line--) {
+		std::getline(fin, result);
+	}
+	fin.close();
+	return result;
+}
+
+bool LexicalAnalyzer::construct_token_table() {
 
 	std::fstream fin;
-	fin.open(filename, std::ios_base::in);
+	fin.open(this->_filename, std::ios_base::in);
 	if (!fin.good()) {
 		throw std::ios_base::failure("LexicalAnalyzer::construct_token_table(): couldn't open file");
 	}
-
 
 	size_t index = 0; // for adding elemnt to map
 	int symbol, err_symbol;
@@ -19,6 +29,8 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 	Token::Type token_type;
 	std::string token_value;
 	size_t token_line = 1;
+
+	bool no_wrong_symbol = true;
 
 	symbol = fin.get();
 	while (fin.good() && !fin.eof()) {
@@ -75,19 +87,22 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 					if (symbol == '/') { // comment check
 						auto next = fin.get();
 						if (next == '*') {
+							fin.unget();
 							this->_state = State::COMMENT;
+							break;
 						}
-						fin.unget();
+						else {
+							fin.unget();
+						}
 					}
-					else {
-						token_type = Token::Type::OPERATION_SIGN;
-						token_value = std::string((std::stringstream() << static_cast<char>(symbol)).str());
 
-						this->_token_table[index++] = Token(token_type, token_line, token_value);
+					token_type = Token::Type::OPERATION_SIGN;
+					token_value = std::string((std::stringstream() << static_cast<char>(symbol)).str());
 
-						symbol = fin.get();
-						this->_state = State::START;
-					}
+					this->_token_table[index++] = Token(token_type, token_line, token_value);
+
+					symbol = fin.get();
+					this->_state = State::START;
 				}
 				else {
 					err_symbol = symbol;
@@ -144,8 +159,12 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 
 			case State::ERROR:
 			{
-				std::cout << "\nUnknown character\n" << static_cast<char>(err_symbol);
+				std::cout << "\n>>> ERROR:";
+				std::cout << "\n>>> unknown character: '" << static_cast<char>(err_symbol) << "'";
+				std::cout << "\n>>> line " << token_line << ": ";
+				std::cout << this->get_file_line(token_line) << std::endl;
 				this->_state = State::START;
+				no_wrong_symbol = false;
 				break;
 			}
 
@@ -200,6 +219,8 @@ void LexicalAnalyzer::construct_token_table(const std::string & filename) {
 			}
 		}
 	} 
+	fin.close();
+	return no_wrong_symbol;
 }
 
 void LexicalAnalyzer::print_token_table(std::ostream & os) const {
@@ -288,7 +309,8 @@ Token LexicalAnalyzer::get_token(size_t key) const {
 	return Token();
 }
 
-void LexicalAnalyzer::construct_ident_table() {
+bool LexicalAnalyzer::construct_ident_table() {
+	bool no_repeated_declarations = true;
 	std::string scope;
 	for (const auto & token_iter : this->_token_table) {	
 		const auto & [pos, token] = token_iter; // current token and its position
@@ -300,8 +322,11 @@ void LexicalAnalyzer::construct_ident_table() {
 			if (next_token.valid()) {
 				const auto ident_name = scope + next_token.value();
 				if (this->_ident_table.contains(ident_name)) { // declaration repeated
-					std::cout << "\n\tREUSE ident: '" << ident_name
-						<< "' type: " << token.value() << std::endl;
+					no_repeated_declarations = false;
+					std::cout << ">>> ERROR:\n";
+					std::cout << ">>> repeated declaraton: '" << ident_name << "'";
+					std::cout << "\n>>> line " << token.line() << ": ";
+					std::cout << this->get_file_line(token.line()) << std::endl;
 				}
 				else { // right declaration, new ident with scope
 					this->_ident_table[ident_name] = Ident(Ident::str_to_type(token.value()), ident_name);
@@ -313,6 +338,7 @@ void LexicalAnalyzer::construct_ident_table() {
 			scope += func_name + "::";
 		}
 	}
+	return no_repeated_declarations;
 }
 
 bool LexicalAnalyzer::is_decl_keyword(const std::string & str) const {

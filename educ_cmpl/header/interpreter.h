@@ -98,6 +98,7 @@ public:
 	void initialize_memory();
 	void construct_notation_output();
 	void execute_notation();
+	static bool is_operation_higher_priority(const std::string& oper1, const std::string& oper2);
 
 	void print_notation(std::ostream & os) const;
 	void print_memory(std::ostream & os) const;

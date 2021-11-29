@@ -637,3 +637,29 @@ void Interpreter::execute_logic_operation(const std::string & op, std::stack<Rpn
 		throw std::logic_error("Interpreter::execute_operation(): unknown operation");
 	}
 }
+
+bool Interpreter::is_operation_higher_priority(const std::string& oper1, const std::string& oper2) {
+	std::map<std::string, OperationsPriority> priorities = {
+	{ "=", OperationsPriority::LOW },
+	{ "==", OperationsPriority::MIDDLE },
+	{ "<", OperationsPriority::MIDDLE },
+	{ ">", OperationsPriority::MIDDLE },
+	{ "+", OperationsPriority::MIDDLE },
+	{ "-", OperationsPriority::MIDDLE },
+	{ "*", OperationsPriority::HIGH },
+	{ "/", OperationsPriority::HIGH },
+	{ "write", OperationsPriority::HIGH },
+	};
+
+	if (priorities.contains(oper1) && priorities.contains(oper2)) {
+		if (priorities[oper1] > priorities[oper2]) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		throw std::invalid_argument("Interpreter::is_operation_higher_priority(): no such operator/operators");
+	}
+}

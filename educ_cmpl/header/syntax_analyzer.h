@@ -32,7 +32,9 @@ private:
 	Result IF_OP() const;
 	Result OPERATION() const;
 	Result ENDL_OP() const;
+	bool balaced_mathematic_expression(const std::vector<Token>& expression) const;
 public:
 	SyntaxAnalyzer(LexicalAnalyzer* la);
+	void print_error(const std::string& expected, const Token& token) const;
 	bool analyze_syntax();
 };
