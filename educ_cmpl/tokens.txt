@@ -1,0 +1,41 @@
+
+         TOKEN TABLE
+
+   LINE          TOKEN TYPE         TOKEN VALUE
+      1             KEYWORD            PROGRAMM
+      1           DELIMITER                   ;
+      4               IDENT                inte
+      4               IDENT                  er
+      4               IDENT                   x
+      4           DELIMITER                   ;
+      5               IDENT                   x
+      5      OPERATION_SIGN                   =
+      5            CONSTANT                  10
+      5      OPERATION_SIGN                   -
+      5            CONSTANT                   2
+      5      OPERATION_SIGN                   *
+      5           DELIMITER                   (
+      5            CONSTANT                   3
+      5      OPERATION_SIGN                   +
+      5            CONSTANT                   1
+      5           DELIMITER                   )
+      5      OPERATION_SIGN                   /
+      5            CONSTANT                   2
+      5           DELIMITER                   ;
+      7             KEYWORD                endl
+      7           DELIMITER                   ;
+      8             KEYWORD             integer
+      8           DELIMITER                   ;
+      9             KEYWORD               write
+      9           DELIMITER                   (
+      9            CONSTANT              "x = "
+      9           DELIMITER                   )
+      9           DELIMITER                   ;
+     10             KEYWORD               write
+     10           DELIMITER                   (
+     10               IDENT                   x
+     10           DELIMITER                   )
+     10           DELIMITER                   ;
+     11           DELIMITER                   ;
+     12             KEYWORD                 END
+     12           DELIMITER                   .

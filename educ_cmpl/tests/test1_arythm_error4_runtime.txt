@@ -1,0 +1,10 @@
+PROGRAMM;
+
+	/* arythmetic */
+	integer x;
+	x = 10 / 0;
+
+	endl;
+	write(x);
+	endl;
+END.

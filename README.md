@@ -102,15 +102,15 @@ educational compiler
 		* language constructions *
 		<LANG_CONSTRUCT_SEQUENCE> ::= <LANG_CONSTRUCT> | <LANG_CONSTRUCT> <LANG_CONSTRUCT_SEQUENCE>
 		<LANG_CONSTRUCT> ::=
-			<VAR_DECL> | 
-			<FUNC_DEF> | 
+			<VAR_DECL> ”;” | 
+			<FUNC_DEF> ”;” | 
 			<ARYTHM_EXPR> “;” | 
 			<FUNC_CALL> “;” | 
-			<LANG_OPERATOR> |
+			<LANG_OPERATOR> ”;” |
 			<COMMENT>
 
 		* variable or function parameter declaration *
-		<VAR_DECL> ::= <TYPE> <IDENT> ”;”
+		<VAR_DECL> ::= <TYPE> <IDENT>
 		<TYPE> ::= “integer” | “string” | “bool”
 
 		* identificator *

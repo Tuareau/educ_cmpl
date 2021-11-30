@@ -1,0 +1,12 @@
+PROGRAMM;
+
+	/* arythmetic */
+	inte&er x;
+	x = 10 - 2 * (3 + 1) / 2;
+
+	endl;
+	integer #; 
+	write("x = ");
+	write(x);
+	$;
+END.

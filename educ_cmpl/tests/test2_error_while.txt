@@ -9,7 +9,7 @@ PROGRAMM;
 	res = 1;
 
 	i = 1;
-	WHILE i < n
+	WHILE i n
 		DO
 			res = res * i;
 			i = i + 1;
@@ -33,27 +33,4 @@ PROGRAMM;
 	write("DONE");
 	endl;
 
-	/* example */
-	integer x;
-	integer h;
-	bool y;
-	string z; 
-	x = 10 - 2 * 3 + 1;
-	h = 4;
-	z = "www";
-	WHILE 1
-		DO
-			x = x - 1;
-			if x < h then
-				y = (x < 2);
-				EXITWHILE;
-			else y = (x > 2);
-			endif;
-	ENDWHILE;
-
-	string l;
-	l = "y = ";
-	write(l);
-	write(y);
-	endl;
 END.

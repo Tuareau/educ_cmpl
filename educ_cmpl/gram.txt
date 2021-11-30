@@ -1,0 +1,185 @@
+	* program *
+	START() {
+		“PROGRAMM”
+		”;”
+		PROGRAM_BODY();	
+		“END” 
+		“.”
+	}
+
+	* program body *
+	PROGRAM_BODY() {
+		while (ok)
+			LANG_CONSTRUCT()
+	}
+
+	LANG_CONSTRUCT() {
+		VAR_DECL();
+		FUNC_DEF();
+		ARYTHM_EXPR(); “;” 
+		FUNC_CALL(); “;” 
+		LANG_OPERATOR();
+	}
+
+	* variable or function parameter declaration *
+	VAR_DECL() {
+		TYPE(); IDENT(); ”;”
+	}
+
+	TYPE() {
+		“integer”
+		“string”
+		“bool”
+	}
+
+	* identificator *
+	IDENT() { 
+		get_token().type != Type::IDENT;
+	}
+
+	* function definition *
+	FUNC_DEF() {
+		FUNC_DECL(); FUNC_BODY(); “ENDF”; “;”
+	}
+
+	FUNC_DECL() {
+		“FUNC”;
+		IDENT();
+		”(“
+		while (ok)
+			FUNC_PARAM(); ","
+		”)” 
+		“;”
+	}
+
+	FUNC_PARAM() {
+		TYPE(); IDENT();
+	}
+
+	* function body *
+	FUNC_BODY() {
+		while (ok)
+			FUNC_CONSTRUCT();
+	}
+	
+	FUNC_CONSTRUCT() {
+		VAR_DECL();
+		ARYTHM_EXPR();
+		FUNC_CALL(); ”;”  
+		LANG_OPERATOR();
+		RETURN_OP();
+	}
+
+	* function constructions *
+	RETURN_OP() {
+		“return” RETURN_EXPR(); ”;”
+	}
+
+	RETURN_EXPR() {
+		FUNC_CALL();
+		ARYTHM_EXPR();
+		LOGICAL_EXPR();
+		IDENT();
+	}
+
+	* function call *
+	FUNC_CALL() {
+		IDENT(); 
+		”(“ 
+		while (ok)
+			ARG(); 
+		”)”
+	}
+
+	ARG() {
+		IDENT();
+		CONST_EXPR();
+	}
+
+	* arythmetic expression *
+	ARYTHM_EXPR() {
+		IDENT(); “=” IDENT(); 
+		IDENT(); “=” ARITHM_OPERATION(); 
+		IDENT(); “=” LOGICAL_EXPR(); 
+		IDENT(); “=” CONST_EXPR(); 
+	}
+
+	* arythmetic operation *
+	ARITHM_OPERATION() {
+		OPERAND(); OP(); OPERAND();
+		OPERAND(); OP(); ARITHM_OPERATION(); 
+	}
+
+	OP() {
+		“+”
+		“-“
+		“/”
+		“*”
+	}
+
+	OPERAND() {
+		IDENT();
+		CONST_EXPR();
+		FUNC_CALL();
+	}
+
+	* constant expression *
+	CONST_EXPR() {
+		is_constant();
+	}
+
+	* logical expression *
+	LOGICAL_EXPR() {
+		LOGICAL_OPERATION();
+		LOGICAL_STATEMENT();
+		“(” LOGICAL_OPERATION(); “)”
+	}
+
+	LOGICAL_OPERATION() {
+		OPERAND(); LOGICAL_OP(); OPERAND();
+	}
+
+	LOGICAL_OP() {
+		“>”
+		“<”
+		“==”
+	}
+
+	LOGICAL_STATEMENT() {
+		IDENT();
+		is_constant();
+		FUNC_CALL(); 
+	}
+
+	* language operators *
+	LANG_OPERATOR() {
+		WHILE_OP();
+		IF_OP();
+		WRITE_OP();
+		ENDL_OP();
+	}
+
+	ENDL_OP {
+		“endl” “;”
+	}
+
+	WRITE_OP() {
+		“write” “(“ while (ok) ARG(); "," “)” “;”
+	}
+
+	WHILE_OP() { 
+		“WHILE” LOGICAL_EXPR(); “DO” while (ok) OPERATION(); “ENDWHILE” “;”
+	}
+
+	IF_OP() {
+		“if” LOGICAL_EXPR(); “then” while (ok) OPERATION(); “endif” ”;”
+		“if” LOGICAL_EXPR(); “then” while (ok) OPERATION(); “else” while (ok) OPERATION(); “endif” “;”
+	}
+
+	OPERATION() {
+		“EXITWHILE” “;”
+		LANG_OPERATOR();
+		FUNC_CALL(); “;”
+		ARYTHM_EXPR(); “;”
+		VAR_DECL();
+	}
